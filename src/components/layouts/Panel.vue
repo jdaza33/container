@@ -1,45 +1,79 @@
 <template>
 <div id="dash">
 
-  <nav class="navbar is-transparent">
-    <div class="navbar-brand">
-      <a class="navbar-item" @click="go('home')">
-        <img src="img/cubos.svg" alt="Andromeda" width="50" height="28">
-        <h1 class="title is-5">Container</h1>
-      </a>
-      <div class="navbar-burger burger" data-target="moreNavbar" @click="burger()">
-        <span></span>
-        <span></span>
-        <span></span>
+  <nav class="navbar">
+      <div class="navbar-brand">
+          <a class="navbar-item" @click="go('home')">
+            <img src="img/cubos.svg" alt="Andromeda" width="50" height="28">
+            <h1 class="title is-5">Container</h1>
+          </a>
       </div>
-    </div>
 
-    <div id="moreNavbar" class="navbar-menu">
-      <div class="navbar-end">
-        <div class="navbar-item">
-          <div class="field is-grouped">
+      <div class="navbar-menu">
+          <div class="navbar-end">
 
-            <b-dropdown hoverable>
-              <button class="button is-vcentered is-primary is-outlined is-rounded" slot="trigger">
-                  <span>jvicente</span>
-                  <b-icon
-                    pack="fas"
-                    icon="bars"
-                    size="is-small">
-                </b-icon>
-              </button>
+              <!--Photo user -->
+              <div class="center">
+                <figure class="image is-48x48 border">
+                  <img src="img/chico.svg" class="is-rounded">
+                </figure>
+              </div>
+              
+              
 
-              <b-dropdown-item @click="isComponentModalUserActive = true">Cuenta</b-dropdown-item>
-              <b-dropdown-item @click="logout()">Salir</b-dropdown-item>
-            </b-dropdown>
+              <b-dropdown v-model="navigation" position="is-bottom-left">
+                  <a class="navbar-item is-info" slot="trigger">
+                      <span>Menu</span>
+                      <b-icon icon="caret-down" pack="fas"></b-icon>
+                  </a>
 
+                  <b-dropdown-item custom>
+                      <p class="title is-6 has-text-centered">Antonio Banderas</p>
+                  </b-dropdown-item>
+
+                  <hr class="dropdown-divider">
+
+                  <b-dropdown-item has-link v-for="(item, index) in items" :key="index">
+                      <a @click="go(item.url)">
+                          <b-icon :icon="item.icon" pack="fas"></b-icon>
+                          {{item.title}}
+                      </a>
+                  </b-dropdown-item>
+
+                  <hr class="dropdown-divider">
+                  <b-dropdown-item value="settings" @click="isComponentModalUserActive = true">
+                      <b-icon icon="cog" pack="fas"></b-icon>
+                      Cuenta
+                  </b-dropdown-item>
+                  <b-dropdown-item value="logout" @click="logout()">
+                      <b-icon icon="sign-out-alt" pack="fas"></b-icon>
+                      Salir
+                  </b-dropdown-item>
+              </b-dropdown>
           </div>
-        </div>
       </div>
-    </div>
   </nav>
 
-  <div class="columns is-fullheight">
+  <div class="center">
+
+    <div class="is-main-content">
+
+      <b-modal :active.sync="isComponentModalUserActive" has-modal-card :width="960">
+          <modal-user-data :userData="userData" :userInfoData="userInfoData"></modal-user-data>
+      </b-modal>
+
+      <router-view></router-view>
+
+    </div>
+
+  </div>
+
+  <!--<div class="columns is-fullheight is-main-content">
+
+      
+  </div>-->
+
+  <!--<div class="columns is-fullheight">
     <div class="column is-2 is-sidebar-menu is-hidden-mobile">
       <div class="container-photo image is-96x96">
         <img src="img/chico.svg">
@@ -69,15 +103,8 @@
       </aside>
     </div>
 
-    <div class="column is-main-content">
-
-       <b-modal :active.sync="isComponentModalUserActive" has-modal-card :width="960">
-            <modal-user-data :userData="userData" :userInfoData="userInfoData"></modal-user-data>
-        </b-modal>
-
-      <router-view></router-view>
-    </div>
-  </div>
+    
+  </div>-->
 
   <footer class="footer">
     <div class="content has-text-centered">
@@ -93,13 +120,12 @@
 </template>
 
 <script>
-
 //Components
-import ModalUserData from "../views/ModalUserData.vue";
+import ModalUserData from '../views/ModalUserData.vue';
 
 export default {
   data() {
-      this.$router.push({ name: 'user' });
+    //this.$router.push({ name: 'user' });
     return {
       drawer: true,
 
@@ -109,47 +135,46 @@ export default {
 
       isComponentModalUserActive: false,
 
-      userData: "",
-      userInfoData: "",
+      userData: '',
+      userInfoData: '',
 
       items: [
-        { title: "Home", icon: "home", role: true, type: "ALL", url: "home" },
+        { title: 'Home', icon: 'home', role: true, type: 'ALL', url: 'home' },
         {
-          title: "Usuarios",
-          icon: "users",
+          title: 'Usuarios',
+          icon: 'users',
           role: true,
-          type: "ALL",
-          url: "user"
+          type: 'ALL',
+          url: 'user',
         },
         {
-          title: "Pedidos",
-          icon: "cart-plus",
+          title: 'Pedidos',
+          icon: 'cart-plus',
           role: true,
-          type: "ALL",
-          url: "order"
-        }
+          type: 'ALL',
+          url: 'order',
+        },
       ],
       right: null,
-      menus: [{ title: "Cerrar Sesión" }]
+      menus: [{ title: 'Cerrar Sesión' }],
     };
   },
   methods: {
     logout() {
-      this.go('login')
+      this.go('login');
     },
 
     go(route) {
       this.$router.push({ name: route });
     },
 
-
     //Metodo para abrir el menu en vista movil
     burger() {
-      let burger = document.querySelector(".burger");
-      let nav = document.querySelector("#" + burger.dataset.target);
+      let burger = document.querySelector('.burger');
+      let nav = document.querySelector('#' + burger.dataset.target);
 
-      burger.classList.toggle("is-active");
-      nav.classList.toggle("is-active");
+      burger.classList.toggle('is-active');
+      nav.classList.toggle('is-active');
     },
 
     isNotLoading() {
@@ -157,9 +182,7 @@ export default {
         this.isLoading = false;
       }
       //this.go('users')
-      
-    }
-
+    },
   },
 
   created() {
@@ -169,8 +192,8 @@ export default {
     //$route: "loadDataUser"
   },
   components: {
-    ModalUserData
-  }
+    ModalUserData,
+  },
 };
 </script>
 
@@ -202,7 +225,7 @@ export default {
   color: black;
 }
 
-.is-sidebar-menu {
+/*.is-sidebar-menu {
   padding: 2.5rem;
   background-color: rgba(79, 147, 237);
   -webkit-box-shadow: 9px 10px 46px -6px rgba(74, 74, 74, 0.84);
@@ -212,12 +235,31 @@ export default {
   position: fixed;
   max-height: auto;
   z-index: 2;
-}
+}*/
 
 .is-main-content {
-  margin: 80px 10px 10px 250px;
+  margin: 80px 10px 10px 10px;
   z-index: 1;
 }
+
+.container{
+    width: 95vw;
+    max-width: 100vw;
+}
+
+/*@media screen and (min-width: 1280px){
+  .container {
+      width: 95vw;
+      max-width: 100vw;
+  }
+}
+
+@media screen and (min-width: 1088px){
+  .container {
+      max-width: 960px;
+      width: 960px;
+  }
+}*/
 
 .footer {
   background-color: white;
@@ -250,6 +292,17 @@ export default {
 hr {
   background-color: black;
   opacity: 0.3;
+}
+
+.border {
+  border: solid 1px rgba(79, 147, 237);
+  border-radius: 50px;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
 
