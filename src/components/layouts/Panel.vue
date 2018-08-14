@@ -21,7 +21,7 @@
               
               
 
-              <b-dropdown v-model="navigation" position="is-bottom-left">
+              <b-dropdown  position="is-bottom-left">
                   <a class="navbar-item is-info" slot="trigger">
                       <span>Menu</span>
                       <b-icon icon="caret-down" pack="fas"></b-icon>
@@ -243,8 +243,10 @@ export default {
 }
 
 .container{
-    width: 95vw;
+    width: 100vw;
+    
     max-width: 100vw;
+    padding: 0px 10px 0px 10px;
 }
 
 /*@media screen and (min-width: 1280px){
