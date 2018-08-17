@@ -16,5 +16,22 @@
     </noscript>
     <div id="app"></div>
     <!-- built files will be auto injected -->
+
+    <script>
+      // Initialize and add the map
+      function initMap() {
+        // The location of Uluru
+        var uluru = {lat: -36.539341, lng: -60.338460};
+        // The map, centered at Uluru
+        var map = new google.maps.Map(
+            document.getElementById('myMap'), {zoom: 3, center: uluru});
+        // The marker, positioned at Uluru
+        var marker = new google.maps.Marker({position: uluru, map: map});
+      }
+    </script>
+
+    <!--<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyADO0m7x04v9uSYGHh9n6Qk0ds0S76ta-E&callback=initMap">
+    </script>-->
   </body>
 </html>

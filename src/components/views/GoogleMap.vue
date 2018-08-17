@@ -2,12 +2,12 @@
   <div>
     <div>
 
-      <!--<label>
+      <label>
         <gmap-autocomplete
           @place_changed="setPlace">
         </gmap-autocomplete>
         <button @click="addMarker">Buscar</button>
-      </label>-->
+      </label>
 
     </div>
     <br>
@@ -19,6 +19,9 @@
       <gmap-marker
         :key="index"
         v-for="(m, index) in markers"
+        :label="{
+          color: 'black'
+        }"
         :position="m.position"
         @click="center=m.position"
       ></gmap-marker>
@@ -27,6 +30,9 @@
 </template>
 
 <script>
+
+import {EventBus} from '@/vueBus.js'
+
 export default {
   name: "GoogleMap",
   data() {
@@ -69,6 +75,14 @@ export default {
         };
       });
     }
+  },
+
+  created() {
+    EventBus.$on('search', address => {
+      alert(address)
+      this.setPlace(address)
+      this.addMarker()
+    });
   }
 };
 </script>

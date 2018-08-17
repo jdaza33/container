@@ -21,7 +21,7 @@
 
                             <div class="field is-grouped">
                                 <p class="control has-icons-left is-expanded">
-                                    <input ref="isfocus" class="input is-rounded is-small" type="text" placeholder="Dirección">
+                                    <input ref="isfocus" class="input is-rounded is-small" type="text" placeholder="Dirección" v-model="address_temp">
                                     <span class="icon is-small is-left">
                                         <i class="fas fa-map-marked-alt"></i>
                                     </span>
@@ -32,7 +32,7 @@
                                         <i class="fas fa-map-marked-alt"></i>
                                     </span>
                                 </p>
-                                <a class="button is-small is-rounded is-info">
+                                <a class="button is-small is-rounded is-info" @click.prevent="searchAddress">
                                     <span class="icon is-small">
                                     <i class="fas fa-search"></i>
                                     </span>
@@ -135,7 +135,8 @@
             <div class="column is-7">
                 <div class="card">
                     <div class="card-content">
-                        <google-map class="map"/>
+                        <!--<google-map class="map"/>-->
+                        <div id="myMap"></div>
                     </div>
                 </div>
             </div>
@@ -291,70 +292,74 @@
 
 <script>
 import GoogleMap from '@/components/views/GoogleMap';
+import {EventBus} from '@/vueBus.js'
+import GoogleMapsLoader from 'google-maps'
 
 export default {
   data() {
       
     return {
-          
-      data: [
-        {
-          nro: 15015,
-          status: 'P',
-          address: 'Argentina, Buenos Aires',
-          client: 'Jose Daza',
-          permission: 125456,
-        },
-        {
-          nro: 15016,
-          status: 'R',
-          address: 'Argentina, Buenos Aires',
-          client: 'Francisco de Miranda',
-          permission: 125456,
-        },
-        {
-          nro: 15017,
-          status: 'E',
-          address: 'Argentina, Buenos Aires',
-          client: 'Antonio Banderas',
-          permission: 125456,
-        },
-        {
-          nro: 15018,
-          status: 'A',
-          address: 'Argentina, Buenos Aires',
-          client: 'Leonardo Dicaprio',
-          permission: 125456,
-        },
-      ],
 
-      datacont: [
-        {
-          cant: 15,
-          importe: '1500.00',
-          fecha: '20-03-2015'
-        }
-      ],
+        address_temp: '',
 
-      isEmpty: false,
-      isBordered: false,
-      isStriped: true,
-      isNarrowed: true,
-      isHoverable: true,
-      isFocusable: false,
-      isLoading: false,
-      hasMobileCards: true,
+        data: [
+            {
+            nro: 15015,
+            status: 'P',
+            address: 'Argentina, Buenos Aires',
+            client: 'Jose Daza',
+            permission: 125456,
+            },
+            {
+            nro: 15016,
+            status: 'R',
+            address: 'Argentina, Buenos Aires',
+            client: 'Francisco de Miranda',
+            permission: 125456,
+            },
+            {
+            nro: 15017,
+            status: 'E',
+            address: 'Argentina, Buenos Aires',
+            client: 'Antonio Banderas',
+            permission: 125456,
+            },
+            {
+            nro: 15018,
+            status: 'A',
+            address: 'Argentina, Buenos Aires',
+            client: 'Leonardo Dicaprio',
+            permission: 125456,
+            },
+        ],
 
-      selected: '',
+        datacont: [
+            {
+            cant: 15,
+            importe: '1500.00',
+            fecha: '20-03-2015'
+            }
+        ],
 
-      isPaginated: true,
-      isPaginationSimple: false,
-      defaultSortDirection: 'asc',
-      currentPage: 1,
-      perPage: 4,
+        isEmpty: false,
+        isBordered: false,
+        isStriped: true,
+        isNarrowed: true,
+        isHoverable: true,
+        isFocusable: false,
+        isLoading: false,
+        hasMobileCards: true,
 
-      checkedRows: [],
-      isCheck: false,
+        selected: '',
+
+        isPaginated: true,
+        isPaginationSimple: false,
+        defaultSortDirection: 'asc',
+        currentPage: 1,
+        perPage: 4,
+
+        checkedRows: [],
+        isCheck: false,
     };
   },
 
@@ -379,6 +384,31 @@ export default {
 
     isFocusInput(){
         this.$refs.isfocus.focus()
+    },
+
+    searchAddress(){
+        EventBus.$emit('search', this.address_temp)
+    },
+
+    googleMaps(){
+        GoogleMapsLoader.KEY = 'AIzaSyADO0m7x04v9uSYGHh9n6Qk0ds0S76ta-E';
+        GoogleMapsLoader.LIBRARIES = ['geometry', 'places'];
+        GoogleMapsLoader.LANGUAGE = 'es';
+
+        GoogleMapsLoader.load(function(google) {
+            let point = { lat: -36.539341, lng: -60.338460 }
+            let map = new google.maps.Map(document.getElementById('myMap'), {
+            zoom: 4,
+            center: point
+            })
+            new google.maps.Marker({position: point, map: map, icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'});
+        })
+    },
+
+    focusAddress(){
+        this.$nextTick(function () {
+            this.$refs.isfocus.focus()
+        })
     }
 
   },
@@ -387,10 +417,17 @@ export default {
     GoogleMap,
   },
 
-  mounted: function () {
+  /*mounted: function () {
         this.$nextTick(function () {
             this.$refs.isfocus.focus()
         })
+    },*/
+
+    mounted: function () {
+
+        this.focusAddress()
+
+        this.googleMaps();
     }
 };
 </script>
@@ -443,6 +480,11 @@ export default {
 
 .end{
     float: right;
+}
+
+#myMap {
+    height:300px;
+    width: 100%;
 }
 
 
