@@ -401,7 +401,38 @@ export default {
             zoom: 4,
             center: point
             })
-            new google.maps.Marker({position: point, map: map, icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'});
+            let marker = new google.maps.Marker({position: { lat: -36.539341, lng: -60.338460 }, map: map, icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'});
+
+            let infowindow = new google.maps.InfoWindow({
+            content: 'Descripción del container'
+            });
+
+            google.maps.event.addListener(marker, 'click', function() {
+            // Llamamos el método open del InfoWindow
+            infowindow.open(map, marker);
+            });
+
+            let marker2 = new google.maps.Marker({position: { lat: -32.539341, lng: -60.338460 }, map: map, icon: 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png'});
+
+            let infowindow2 = new google.maps.InfoWindow({
+            content: 'Descripción del container'
+            });
+
+            google.maps.event.addListener(marker2, 'click', function() {
+            // Llamamos el método open del InfoWindow
+            infowindow2.open(map, marker2);
+            });
+
+            let marker3 = new google.maps.Marker({position: { lat: -34.539341, lng: -62.338460 }, map: map, icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'});
+
+            let infowindow3 = new google.maps.InfoWindow({
+            content: 'Descripción del container'
+            });
+
+            google.maps.event.addListener(marker3, 'click', function() {
+            // Llamamos el método open del InfoWindow
+            infowindow3.open(map, marker3);
+            });
         })
     },
 
@@ -416,12 +447,6 @@ export default {
   components: {
     GoogleMap,
   },
-
-  /*mounted: function () {
-        this.$nextTick(function () {
-            this.$refs.isfocus.focus()
-        })
-    },*/
 
     mounted: function () {
 
