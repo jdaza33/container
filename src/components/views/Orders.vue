@@ -27,12 +27,12 @@
                                     </span>
                                 </p>
                                 <p class="control has-icons-left">
-                                    <input class="input is-rounded is-small" type="text" placeholder="Localidad">
+                                    <input class="input is-rounded is-small" type="text" placeholder="Localidad" v-model="location_temp">
                                     <span class="icon is-small is-left">
                                         <i class="fas fa-map-marked-alt"></i>
                                     </span>
                                 </p>
-                                <a class="button is-small is-rounded is-info" @click.prevent="searchAddress">
+                                <a class="button is-small is-rounded is-info" @click.prevent="localizar(address_temp, location_temp)">
                                     <span class="icon is-small">
                                     <i class="fas fa-search"></i>
                                     </span>
@@ -301,6 +301,7 @@ export default {
     return {
 
         address_temp: '',
+        location_temp: '',
 
         data: [
             {
@@ -392,6 +393,7 @@ export default {
 
     googleMaps(){
         GoogleMapsLoader.KEY = 'AIzaSyADO0m7x04v9uSYGHh9n6Qk0ds0S76ta-E';
+        //GoogleMapsLoader.KEY = 'AIzaSyBjsVITJOzJLQkNNP3QcBcpFlrCtvLYRhY';
         GoogleMapsLoader.LIBRARIES = ['geometry', 'places'];
         GoogleMapsLoader.LANGUAGE = 'es';
 
@@ -434,6 +436,52 @@ export default {
             infowindow3.open(map, marker3);
             });
         })
+    },
+
+    localizar(a, b){
+        let direccion = a + ', ' + b
+        
+        GoogleMapsLoader.KEY = 'AIzaSyADO0m7x04v9uSYGHh9n6Qk0ds0S76ta-E';
+        //GoogleMapsLoader.KEY = 'AIzaSyBjsVITJOzJLQkNNP3QcBcpFlrCtvLYRhY';
+        GoogleMapsLoader.LIBRARIES = ['geometry', 'places'];
+        GoogleMapsLoader.LANGUAGE = 'es';
+
+        GoogleMapsLoader.load(function(google) {
+            
+            let point = { lat: -36.539341, lng: -60.338460 }
+            let map = new google.maps.Map(document.getElementById('myMap'), {
+            zoom: 13,
+            center: point
+            })
+
+            let geocoder = new google.maps.Geocoder()
+
+            geocoder.geocode({'address': direccion }, (res, status) => {
+                if(status=='OK'){
+                    //let result = res[0].geometry.location
+                    //let result_lat = res.lat()
+                    //let result_long = res.lng()
+
+                    map.setCenter(res[0].geometry.location)
+                    new google.maps.Marker({
+                        map: map,
+                        position: res[0].geometry.location
+                    })
+                }else{
+                    let mensajeError = "";
+                    if (status === "ZERO_RESULTS") {
+                        mensajeError = "No hubo resultados para la dirección ingresada.";
+                    } else if (status === "OVER_QUERY_LIMIT" || status === "REQUEST_DENIED" || status === "UNKNOWN_ERROR") {
+                        mensajeError = "Error general del mapa.";
+                    } else if (status === "INVALID_REQUEST") {
+                        mensajeError = "Error de la web. Contacte con Name Agency.";
+                    }
+                    alert(mensajeError);
+                }
+            })
+        })
+
+
     },
 
     focusAddress(){
