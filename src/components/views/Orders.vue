@@ -21,13 +21,13 @@
 
                             <div class="field is-grouped">
                                 <p class="control has-icons-left is-expanded">
-                                    <input ref="isfocus" class="input is-rounded is-small" type="text" placeholder="Dirección" v-model="address_temp">
+                                    <input ref="isfocus" class="input is-rounded is-small" @keypress.enter="localizar(address_temp, location_temp)" type="text" placeholder="Dirección" v-model="address_temp">
                                     <span class="icon is-small is-left">
                                         <i class="fas fa-map-marked-alt"></i>
                                     </span>
                                 </p>
                                 <p class="control has-icons-left">
-                                    <input class="input is-rounded is-small" type="text" placeholder="Localidad" v-model="location_temp">
+                                    <input class="input is-rounded is-small" @keypress.enter="localizar(address_temp, location_temp)" type="text" placeholder="Localidad" v-model="location_temp">
                                     <span class="icon is-small is-left">
                                         <i class="fas fa-map-marked-alt"></i>
                                     </span>
@@ -152,8 +152,59 @@
 
                         <p class="title is-6 has-text-centered">Pedidos Comprometidos para la fecha: dd-mm-aaaa</p>
 
+                        <section class="center">
+                            <b-field>
+                                <!--<p class="title is-6 has-text-centered">Visualizar: </p>-->
+
+                                <b-radio-button v-model="showState"
+                                    native-value="ALL"
+                                    type="is-light"
+                                    size="is-small"
+                                    @click.native="showStatus('ALL')">
+                                    <b-icon icon="eye" pack="fas"></b-icon>
+                                    <span>Todos</span>
+                                </b-radio-button>
+
+                                <b-radio-button v-model="showState"
+                                    native-value="E"
+                                    type="is-success"
+                                    size="is-small"
+                                    @click.native="showStatus('E')">
+                                    <b-icon icon="check" pack="fas"></b-icon>
+                                    <span>Entregado</span>
+                                </b-radio-button>
+
+                                <b-radio-button v-model="showState"
+                                    native-value="P"
+                                    type="is-warning"
+                                    size="is-small"
+                                    @click.native="showStatus('P')">
+                                    <b-icon icon="exclamation" pack="fas"></b-icon>
+                                    <span>Pendiente</span>
+                                </b-radio-button>
+
+                                <b-radio-button v-model="showState"
+                                    native-value="R"
+                                    type="is-info"
+                                    size="is-small"
+                                    @click.native="showStatus('R')">
+                                    <b-icon icon="check-double" pack="fas"></b-icon>
+                                    <span>Retirado</span>
+                                </b-radio-button>
+
+                                <b-radio-button v-model="showState"
+                                    native-value="A"
+                                    type="is-danger"
+                                    size="is-small"
+                                    @click.native="showStatus('A')">
+                                    <b-icon icon="people-carry" pack="fas"></b-icon>
+                                    <span>A Retirar</span>
+                                </b-radio-button>
+                            </b-field>
+                        </section>
+
                         <b-table
-                        :data="isEmpty ? [] : data"
+                        :data="showState == 'ALL' ? data : showState == 'E' ? dataE :  showState == 'P' ? dataP :  showState == 'R' ? dataR : dataA"
                         :bordered="isBordered"
                         :striped="isStriped"
                         :narrowed="isNarrowed"
@@ -186,7 +237,7 @@
                                 <b-tag 
                                 :type="props.row.status == 'P' ? 'is-warning' :
                                 props.row.status == 'R' ? 'is-info':
-                                props.row.status == 'E' ? 'is-success': 'is-dark'">
+                                props.row.status == 'E' ? 'is-success': 'is-danger'">
 
                                 {{ props.row.status == 'P' ? 'Pendiente' :
                                 props.row.status == 'R' ? 'Retirado':
@@ -292,75 +343,118 @@
 
 <script>
 import GoogleMap from '@/components/views/GoogleMap';
-import {EventBus} from '@/vueBus.js'
-import GoogleMapsLoader from 'google-maps'
+import { EventBus } from '@/vueBus.js';
+import GoogleMapsLoader from 'google-maps';
 
 export default {
   data() {
-      
+    GoogleMapsLoader.KEY = 'AIzaSyADO0m7x04v9uSYGHh9n6Qk0ds0S76ta-E';
+    GoogleMapsLoader.LIBRARIES = ['geometry', 'places'];
+    GoogleMapsLoader.LANGUAGE = 'es';
+
     return {
+      address_temp: '',
+      location_temp: '',
+      showState: 'ALL',
 
-        address_temp: '',
-        location_temp: '',
+      data: [
+        {
+          nro: 15015,
+          status: 'P',
+          address: 'Argentina, Buenos Aires',
+          client: 'Jose Daza',
+          permission: 125456,
+        },
+        {
+          nro: 15016,
+          status: 'R',
+          address: 'Argentina, Buenos Aires',
+          client: 'Francisco de Miranda',
+          permission: 125456,
+        },
+        {
+          nro: 15017,
+          status: 'E',
+          address: 'Argentina, Buenos Aires',
+          client: 'Antonio Banderas',
+          permission: 125456,
+        },
+        {
+          nro: 15018,
+          status: 'A',
+          address: 'Argentina, Buenos Aires',
+          client: 'Leonardo Dicaprio',
+          permission: 125456,
+        },
+      ],
 
-        data: [
-            {
-            nro: 15015,
-            status: 'P',
-            address: 'Argentina, Buenos Aires',
-            client: 'Jose Daza',
-            permission: 125456,
-            },
-            {
-            nro: 15016,
-            status: 'R',
-            address: 'Argentina, Buenos Aires',
-            client: 'Francisco de Miranda',
-            permission: 125456,
-            },
-            {
-            nro: 15017,
-            status: 'E',
-            address: 'Argentina, Buenos Aires',
-            client: 'Antonio Banderas',
-            permission: 125456,
-            },
-            {
-            nro: 15018,
-            status: 'A',
-            address: 'Argentina, Buenos Aires',
-            client: 'Leonardo Dicaprio',
-            permission: 125456,
-            },
-        ],
+      dataE: [
+        {
+          nro: 15017,
+          status: 'E',
+          address: 'Argentina, Buenos Aires',
+          client: 'Antonio Banderas',
+          permission: 125456,
+        },
+      ],
 
-        datacont: [
-            {
-            cant: 15,
-            importe: '1500.00',
-            fecha: '20-03-2015'
-            }
-        ],
+      dataP: [
+        {
+          nro: 15015,
+          status: 'P',
+          address: 'Argentina, Buenos Aires',
+          client: 'Jose Daza',
+          permission: 125456,
+        },
+      ],
 
-        isEmpty: false,
-        isBordered: false,
-        isStriped: true,
-        isNarrowed: true,
-        isHoverable: true,
-        isFocusable: false,
-        isLoading: false,
-        hasMobileCards: true,
+      dataR: [
+        {
+          nro: 15016,
+          status: 'R',
+          address: 'Argentina, Buenos Aires',
+          client: 'Francisco de Miranda',
+          permission: 125456,
+        },
+      ],
 
-        selected: '',
+      dataA: [
+        {
+          nro: 15018,
+          status: 'A',
+          address: 'Argentina, Buenos Aires',
+          client: 'Leonardo Dicaprio',
+          permission: 125456,
+        },
+      ],
 
-        isPaginated: true,
-        isPaginationSimple: false,
-        defaultSortDirection: 'asc',
-        currentPage: 1,
-        perPage: 4,
+      datacont: [
+        {
+          cant: 15,
+          importe: '1500.00',
+          fecha: '20-03-2015',
+        },
+      ],
 
-        checkedRows: [],
-        isCheck: false,
+      isEmpty: false,
+      isBordered: false,
+      isStriped: true,
+      isNarrowed: true,
+      isHoverable: true,
+      isFocusable: false,
+      isLoading: false,
+      hasMobileCards: true,
+
+      selected: '',
+
+      isPaginated: true,
+      isPaginationSimple: false,
+      defaultSortDirection: 'asc',
+      currentPage: 1,
+      perPage: 4,
+
+      checkedRows: [],
+      isCheck: false,
     };
   },
 
@@ -383,131 +477,228 @@ export default {
       }
     },
 
-    isFocusInput(){
-        this.$refs.isfocus.focus()
+    isFocusInput() {
+      this.$refs.isfocus.focus();
     },
 
-    searchAddress(){
-        EventBus.$emit('search', this.address_temp)
+    searchAddress() {
+      EventBus.$emit('search', this.address_temp);
     },
 
-    googleMaps(){
-        GoogleMapsLoader.KEY = 'AIzaSyADO0m7x04v9uSYGHh9n6Qk0ds0S76ta-E';
-        //GoogleMapsLoader.KEY = 'AIzaSyBjsVITJOzJLQkNNP3QcBcpFlrCtvLYRhY';
-        GoogleMapsLoader.LIBRARIES = ['geometry', 'places'];
-        GoogleMapsLoader.LANGUAGE = 'es';
+    googleMaps() {
+      GoogleMapsLoader.load(function(google) {
+        let point = { lat: -36.539341, lng: -60.33846 };
+        let map = new google.maps.Map(document.getElementById('myMap'), {
+          zoom: 4,
+          center: point,
+        });
+        let marker = new google.maps.Marker({
+          position: { lat: -36.539341, lng: -60.33846 },
+          map: map,
+          icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+        });
 
-        GoogleMapsLoader.load(function(google) {
-            let point = { lat: -36.539341, lng: -60.338460 }
-            let map = new google.maps.Map(document.getElementById('myMap'), {
-            zoom: 4,
-            center: point
-            })
-            let marker = new google.maps.Marker({position: { lat: -36.539341, lng: -60.338460 }, map: map, icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'});
+        let infowindow = new google.maps.InfoWindow({
+          content: 'Descripción del container',
+        });
+
+        google.maps.event.addListener(marker, 'click', function() {
+          // Llamamos el método open del InfoWindow
+          infowindow.open(map, marker);
+        });
+
+        let marker2 = new google.maps.Marker({
+          position: { lat: -32.539341, lng: -60.33846 },
+          map: map,
+          icon: 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png',
+        });
+
+        let infowindow2 = new google.maps.InfoWindow({
+          content: 'Descripción del container',
+        });
+
+        google.maps.event.addListener(marker2, 'click', function() {
+          // Llamamos el método open del InfoWindow
+          infowindow2.open(map, marker2);
+        });
+
+        let marker3 = new google.maps.Marker({
+          position: { lat: -34.539341, lng: -62.33846 },
+          map: map,
+          icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+        });
+
+        let infowindow3 = new google.maps.InfoWindow({
+          content: 'Descripción del container',
+        });
+
+        google.maps.event.addListener(marker3, 'click', function() {
+          // Llamamos el método open del InfoWindow
+          infowindow3.open(map, marker3);
+        });
+
+        let marker4 = new google.maps.Marker({
+          position: { lat: -38.539341, lng: -62.33846 },
+          map: map,
+          icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+        });
+
+        let infowindow4 = new google.maps.InfoWindow({
+          content: 'Descripción del container',
+        });
+
+        google.maps.event.addListener(marker4, 'click', function() {
+          // Llamamos el método open del InfoWindow
+          infowindow4.open(map, marker4);
+        });
+      });
+    },
+
+    localizar(a, b) {
+      let direccion = a + ', ' + b;
+
+      GoogleMapsLoader.load(google => {
+        let map = new google.maps.Map(document.getElementById('myMap'), {
+          zoom: 14,
+        });
+
+        let geocoder = new google.maps.Geocoder();
+
+        geocoder.geocode({ address: direccion }, (res, status) => {
+          if (status == 'OK') {
+            //let result = res[0].geometry.location
+            //let result_lat = res.lat()
+            //let result_long = res.lng()
+
+            map.setCenter(res[0].geometry.location);
+            new google.maps.Marker({
+              map: map,
+              position: res[0].geometry.location,
+            });
+          } else {
+            let mensajeError = '';
+            if (status === 'ZERO_RESULTS') {
+              mensajeError = 'No hubo resultados para la dirección ingresada.';
+            } else if (
+              status === 'OVER_QUERY_LIMIT' ||
+              status === 'REQUEST_DENIED' ||
+              status === 'UNKNOWN_ERROR'
+            ) {
+              mensajeError = 'Error general del mapa.';
+            } else if (status === 'INVALID_REQUEST') {
+              mensajeError = 'Error de la web. Contacte con Name Agency.';
+            }
+            alert(mensajeError);
+          }
+        });
+      });
+    },
+
+    focusAddress() {
+      this.$nextTick(() => {
+        this.$refs.isfocus.focus();
+      });
+    },
+
+    showStatus(status) {
+        
+      GoogleMapsLoader.load(google => {
 
             let infowindow = new google.maps.InfoWindow({
-            content: 'Descripción del container'
+            content: 'Descripción del container',
             });
 
-            google.maps.event.addListener(marker, 'click', function() {
-            // Llamamos el método open del InfoWindow
-            infowindow.open(map, marker);
-            });
+            if (status == 'E') {
 
-            let marker2 = new google.maps.Marker({position: { lat: -32.539341, lng: -60.338460 }, map: map, icon: 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png'});
+                let point = { lat: -36.539341, lng: -60.33846 };
+                let map = new google.maps.Map(document.getElementById('myMap'), {
+                    zoom: 4,
+                    center: point
+                });
+                let marker = new google.maps.Marker({
+                    position: { lat: -36.539341, lng: -60.33846 },
+                    map: map,
+                    icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+                });
+                google.maps.event.addListener(marker, 'click', function() {
+                    infowindow.open(map, marker);
+                });
 
-            let infowindow2 = new google.maps.InfoWindow({
-            content: 'Descripción del container'
-            });
+            } else if (status == 'P') {
 
-            google.maps.event.addListener(marker2, 'click', function() {
-            // Llamamos el método open del InfoWindow
-            infowindow2.open(map, marker2);
-            });
+                let point = { lat: -36.539341, lng: -60.33846 };
+                let map2 = new google.maps.Map(document.getElementById('myMap'), {
+                    zoom: 4,
+                    center: point
+                });
+                let marker2 = new google.maps.Marker({
+                    position: { lat: -32.539341, lng: -60.33846 },
+                    map: map2,
+                    icon: 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png',
+                });
+                google.maps.event.addListener(marker2, 'click', function() {
+                    infowindow.open(map2, marker2);
+                });
 
-            let marker3 = new google.maps.Marker({position: { lat: -34.539341, lng: -62.338460 }, map: map, icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'});
+            } else if (status == 'R') {
 
-            let infowindow3 = new google.maps.InfoWindow({
-            content: 'Descripción del container'
-            });
+                let point = { lat: -36.539341, lng: -60.33846 };
+                let map3 = new google.maps.Map(document.getElementById('myMap'), {
+                    zoom: 4,
+                    center: point
+                });
+                let marker3 = new google.maps.Marker({
+                    position: { lat: -34.539341, lng: -62.33846 },
+                    map: map3,
+                    icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+                });
+                google.maps.event.addListener(marker3, 'click', function() {
+                    infowindow.open(map3, marker3);
+                });
 
-            google.maps.event.addListener(marker3, 'click', function() {
-            // Llamamos el método open del InfoWindow
-            infowindow3.open(map, marker3);
-            });
-        })
+            } else if (status == 'A') {
+
+                let point = { lat: -36.539341, lng: -60.33846 };
+                let map4 = new google.maps.Map(document.getElementById('myMap'), {
+                    zoom: 4,
+                    center: point
+                });
+
+                let marker4 = new google.maps.Marker({
+                    position: { lat: -38.539341, lng: -62.33846 },
+                    map: map4,
+                    icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+                });
+
+                google.maps.event.addListener(marker4, 'click', function() {
+                    infowindow.open(map4, marker4);
+                });
+
+            } else{
+                this.googleMaps();
+            }
+      });
     },
-
-    localizar(a, b){
-        let direccion = a + ', ' + b
-        
-        GoogleMapsLoader.KEY = 'AIzaSyADO0m7x04v9uSYGHh9n6Qk0ds0S76ta-E';
-        //GoogleMapsLoader.KEY = 'AIzaSyBjsVITJOzJLQkNNP3QcBcpFlrCtvLYRhY';
-        GoogleMapsLoader.LIBRARIES = ['geometry', 'places'];
-        GoogleMapsLoader.LANGUAGE = 'es';
-
-        GoogleMapsLoader.load(function(google) {
-            
-            let point = { lat: -36.539341, lng: -60.338460 }
-            let map = new google.maps.Map(document.getElementById('myMap'), {
-            zoom: 13,
-            center: point
-            })
-
-            let geocoder = new google.maps.Geocoder()
-
-            geocoder.geocode({'address': direccion }, (res, status) => {
-                if(status=='OK'){
-                    //let result = res[0].geometry.location
-                    //let result_lat = res.lat()
-                    //let result_long = res.lng()
-
-                    map.setCenter(res[0].geometry.location)
-                    new google.maps.Marker({
-                        map: map,
-                        position: res[0].geometry.location
-                    })
-                }else{
-                    let mensajeError = "";
-                    if (status === "ZERO_RESULTS") {
-                        mensajeError = "No hubo resultados para la dirección ingresada.";
-                    } else if (status === "OVER_QUERY_LIMIT" || status === "REQUEST_DENIED" || status === "UNKNOWN_ERROR") {
-                        mensajeError = "Error general del mapa.";
-                    } else if (status === "INVALID_REQUEST") {
-                        mensajeError = "Error de la web. Contacte con Name Agency.";
-                    }
-                    alert(mensajeError);
-                }
-            })
-        })
-
-
-    },
-
-    focusAddress(){
-        this.$nextTick(function () {
-            this.$refs.isfocus.focus()
-        })
-    }
-
   },
 
   components: {
     GoogleMap,
   },
 
-    mounted: function () {
+  mounted: function() {
+    this.focusAddress();
 
-        this.focusAddress()
+    this.googleMaps();
 
-        this.googleMaps();
-    }
+    //this.showStatus(this.showState)
+  },
+
+  watch: {},
 };
 </script>
 
 
 <style scoped>
-
 .container {
   height: 100%;
   margin: 0;
@@ -534,32 +725,49 @@ export default {
   padding: 0.8rem;
 }
 
-.breadcrumb{
-    margin: 0px;
+.breadcrumb {
+  margin: 0px;
 }
 
 .field:not(:last-child) {
-    margin-bottom: 0rem;
+  margin-bottom: 0rem;
 }
 
 .b-table .level {
-    padding-bottom: 1rem;
+  padding-bottom: 1rem;
 }
 
 /*CSS Para title*/
-.box:not(:last-child), .content:not(:last-child), .notification:not(:last-child), .progress:not(:last-child), .table:not(:last-child), .table-container:not(:last-child), .title:not(:last-child), .subtitle:not(:last-child), .block:not(:last-child), .highlight:not(:last-child), .breadcrumb:not(:last-child), .level:not(:last-child), .message:not(:last-child), .tabs:not(:last-child) {
-    margin-bottom: 0.5rem;
+.box:not(:last-child),
+.content:not(:last-child),
+.notification:not(:last-child),
+.progress:not(:last-child),
+.table:not(:last-child),
+.table-container:not(:last-child),
+.title:not(:last-child),
+.subtitle:not(:last-child),
+.block:not(:last-child),
+.highlight:not(:last-child),
+.breadcrumb:not(:last-child),
+.level:not(:last-child),
+.message:not(:last-child),
+.tabs:not(:last-child) {
+  margin-bottom: 0.5rem;
 }
 
-.end{
-    float: right;
+.end {
+  float: right;
 }
 
 #myMap {
-    height:300px;
-    width: 100%;
+  height: 300px;
+  width: 100%;
 }
 
-
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 </style>
 

@@ -125,8 +125,7 @@
                         icon="key"
                         password-reveal
                         v-model="infoUser.password"
-                        rounded
-                        disabled>
+                        rounded>
                     </b-input>
                 </b-field>
 
@@ -177,6 +176,12 @@ export default {
 }
 .modal-card-foot {
   height: 50px;
+}
+
+.master{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 </style>
 

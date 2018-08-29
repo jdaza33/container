@@ -104,7 +104,7 @@
                         </b-tag>
                     </b-table-column>
 
-                    <b-table-column field="event" label="Eventos" width="80" centered sortable>
+                    <b-table-column field="event" label="Eventos" width="130" centered sortable>
                         <p class="buttons is-centered">
                             <!--<a class="button is-small is-info is-outlined" @click="b()">
                                 <span class="icon is-small">
@@ -114,6 +114,11 @@
                             <a class="button is-small is-success is-outlined">
                                 <span class="icon is-small">
                                 <i class="fas fa-check-circle"></i>
+                                </span>
+                            </a>
+                            <a class="button is-small is-info is-outlined">
+                                <span class="icon is-small">
+                                <i class="fas fa-sync-alt"></i>
                                 </span>
                             </a>
                             <a class="button is-small is-danger is-outlined">
