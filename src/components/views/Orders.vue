@@ -97,7 +97,7 @@
                                     <p class="buttons is-centered">
                                         <a class="button is-small is-success is-outlined">
                                             <span class="icon is-small">
-                                            <i class="fas fa-check-circle"></i>
+                                            <i class="fas fa-plus-circle"></i>
                                             </span>
                                         </a>
                                     </p>
@@ -114,7 +114,7 @@
                                 <div class="column is-6 end">
                                     <p class="buttons is-centered">
                                         <a class="button is-small is-success is-outlined">
-                                            Aceptar
+                                            Guardar
                                         </a>
                                         <a class="button is-small is-danger is-outlined">
                                             Cancelar
@@ -253,7 +253,7 @@
                                             v-model="props.row.address"
                                             type="text"
                                             rounded
-                                            maxlength="12"
+                                            maxlength="30"
                                             size="is-small">
                                             </b-input>
                                         </b-field>
@@ -267,28 +267,48 @@
                                 </div>
                             </b-table-column>
 
-                            <b-table-column field="client" label="Cliente" width="100" centered sortable>
+                            <b-table-column field="client" label="Contacto" width="120" centered sortable>
                                 <div v-if="checkedRows.length > 0">
                                     <div v-if="checkedRows[0].nro == props.row.nro">
                                         <b-field>
                                             <b-input 
-                                            v-model="props.row.client"
+                                            v-model="props.row.contact"
                                             type="text"
                                             rounded
-                                            maxlength="12"
+                                            maxlength="30"
                                             size="is-small">
                                             </b-input>
                                         </b-field>
                                     </div>
                                     <div v-else>
-                                        {{props.row.client}}
+                                        {{props.row.contact}}
                                     </div>
                                 </div>
                                 <div v-else>
-                                    {{props.row.client}}
+                                    {{props.row.contact}}
                                 </div>
-                                
-                                
+                            </b-table-column>
+
+                            <b-table-column field="date" label="Fecha Comprometida" width="140" centered sortable>
+                                <div v-if="checkedRows.length > 0">
+                                    <div v-if="checkedRows[0].nro == props.row.nro">
+                                        <b-field>
+                                            <b-input 
+                                            v-model="props.row.date"
+                                            type="text"
+                                            rounded
+                                            maxlength="8"
+                                            size="is-small">
+                                            </b-input>
+                                        </b-field>
+                                    </div>
+                                    <div v-else>
+                                        {{props.row.date}}
+                                    </div>
+                                </div>
+                                <div v-else>
+                                    {{props.row.date}}
+                                </div>
                             </b-table-column>
 
                             <b-table-column field="event" label="Eventos" width="120" centered sortable>
@@ -354,36 +374,40 @@ export default {
 
     return {
       address_temp: '',
-      location_temp: '',
+      location_temp: 'Cordoba',
       showState: 'ALL',
 
       data: [
         {
           nro: 15015,
           status: 'P',
-          address: 'Argentina, Buenos Aires',
-          client: 'Jose Daza',
+          address: 'Antonio Machado 1874 B Villa Argentina',
+          contact: 'Sra Monica 43434343',
+          date: 'dd/mm/aa',
           permission: 125456,
         },
         {
           nro: 15016,
           status: 'R',
-          address: 'Argentina, Buenos Aires',
-          client: 'Francisco de Miranda',
+          address: 'Antonio Machado 1874 B Villa Argentina',
+          contact: 'Sra Monica 434343',
+          date: 'dd/mm/aa',
           permission: 125456,
         },
         {
           nro: 15017,
           status: 'E',
-          address: 'Argentina, Buenos Aires',
-          client: 'Antonio Banderas',
+          address: 'Antonio Machado 1874 B Villa Argentina',
+          contact: 'Sra Monica 123456789',
+          date: 'dd/mm/aa',
           permission: 125456,
         },
         {
           nro: 15018,
           status: 'A',
-          address: 'Argentina, Buenos Aires',
-          client: 'Leonardo Dicaprio',
+          address: 'Antonio Machado 1874 B Villa Argentina',
+          contact: 'Sra Monica 12345655',
+          date: 'dd/mm/aa',
           permission: 125456,
         },
       ],
