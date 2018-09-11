@@ -32,7 +32,15 @@ export default {
       "success": ($success, $success-invert),
       "warning": ($warning, $warning-invert),
       "danger": ($danger, $danger-invert),
-      "twitter": ($twitter, $twitter-invert)
+      "twitter": ($twitter, $twitter-invert),
+
+      "p": (#0095FF, #0095FF),
+      "ae": (#00FF4D, #00FF4D),
+      "e": (#2DAD54, #2DAD54),
+      "pr": (#F7FF00, #F7FF00),
+      "ar": (#FFCC00, #FFCC00),
+      "v": (#FF0000, #FF0000),
+      "ru": (#FF00F7, #FF00F7),
   );
 
   // Links

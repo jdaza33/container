@@ -152,13 +152,12 @@
 
                         <p class="title is-6 has-text-centered">Pedidos Comprometidos para la fecha: dd-mm-aaaa</p>
 
-                        <section class="center">
-                            <b-field>
-                                <!--<p class="title is-6 has-text-centered">Visualizar: </p>-->
+                        <section>
+                            <!--<b-field>
 
                                 <b-radio-button v-model="showState"
                                     native-value="ALL"
-                                    type="is-light"
+                                    type="is-ru"
                                     size="is-small"
                                     @click.native="showStatus('ALL')">
                                     <b-icon icon="eye" pack="fas"></b-icon>
@@ -200,11 +199,53 @@
                                     <b-icon icon="people-carry" pack="fas"></b-icon>
                                     <span>A Retirar</span>
                                 </b-radio-button>
+                            </b-field>-->
+
+                            <b-field grouped>
+
+                              <b-field>
+                                <b-datepicker
+                                    placeholder="Fecha de inicio"
+                                    icon="calendar-alt"
+                                    icon-pack="fas"
+                                    size="is-small"
+                                    rounded>
+                                </b-datepicker>
+                              </b-field>
+                              <b-field>
+                                <b-datepicker
+                                    placeholder="Fecha de fin"
+                                    icon="calendar-alt"
+                                    icon-pack="fas"
+                                    size="is-small"
+                                    rounded>
+                                </b-datepicker>
+                              </b-field>
+
+                              <b-field grouped>
+
+                                <p class="control has-icons-left">
+                                  <input class="input is-rounded is-small" type="text" placeholder="Buscar" @keyup="filter()" v-model="search">
+                                  <span class="icon is-small is-left">
+                                      <i class="fas fa-search"></i>
+                                  </span>
+                                </p>
+                                  
+                              </b-field>
+                                
                             </b-field>
+
+                            
+
+                            
+
+                           
                         </section>
 
+                        
+
                         <b-table
-                        :data="showState == 'ALL' ? data : showState == 'E' ? dataE :  showState == 'P' ? dataP :  showState == 'R' ? dataR : dataA"
+                        :data="data_aux"
                         :bordered="isBordered"
                         :striped="isStriped"
                         :narrowed="isNarrowed"
@@ -253,7 +294,7 @@
                                             v-model="props.row.address"
                                             type="text"
                                             rounded
-                                            maxlength="30"
+                                            maxlength="60"
                                             size="is-small">
                                             </b-input>
                                         </b-field>
@@ -362,103 +403,117 @@
 </template>
 
 <script>
-import GoogleMap from '@/components/views/GoogleMap';
-import { EventBus } from '@/vueBus.js';
-import GoogleMapsLoader from 'google-maps';
+import GoogleMap from "@/components/views/GoogleMap";
+import { EventBus } from "@/vueBus.js";
+import GoogleMapsLoader from "google-maps";
+
+/*
+Pendiente P (#0095FF) --> https://image.ibb.co/goBifU/mapas_y_banderas_6.png
+A Enviar AE (#00FF4D) --> https://image.ibb.co/k9p8Ep/mapas_y_banderas_5.png
+Entregado E (#2DAD54) --> https://image.ibb.co/m2uKLU/mapas_y_banderas_4.png
+Posible Retirar PR (#F7FF00) --> https://image.ibb.co/kAMG0U/mapas_y_banderas_3.png
+A Retirar AR (#FFCC00) --> https://image.ibb.co/dLUfS9/mapas_y_banderas_2.png
+Vencido V (#FF0000) --> https://image.ibb.co/n1vWZp/mapas_y_banderas_1.png
+Retirar Urgente RU (#FF00F7) --> https://image.ibb.co/ip8779/mapas_y_banderas.png
+*/
 
 export default {
   data() {
-    GoogleMapsLoader.KEY = 'AIzaSyADO0m7x04v9uSYGHh9n6Qk0ds0S76ta-E';
-    GoogleMapsLoader.LIBRARIES = ['geometry', 'places'];
-    GoogleMapsLoader.LANGUAGE = 'es';
+    GoogleMapsLoader.KEY = "AIzaSyADO0m7x04v9uSYGHh9n6Qk0ds0S76ta-E";
+    GoogleMapsLoader.LIBRARIES = ["geometry", "places"];
+    GoogleMapsLoader.LANGUAGE = "es";
 
     return {
-      address_temp: '',
-      location_temp: 'Cordoba',
-      showState: 'ALL',
+      //Datos Estados
+      status: [
+        {
+          name: "Pendiente",
+          abv: "P",
+          icon: "https://image.ibb.co/goBifU/mapas_y_banderas_6.png",
+          color: "#0095FF"
+        },
+        {
+          name: "A Enviar",
+          abv: "AE",
+          icon: "https://image.ibb.co/k9p8Ep/mapas_y_banderas_5.png",
+          color: "#00FF4D"
+        },
+        {
+          name: "Entregado",
+          abv: "E",
+          icon: "https://image.ibb.co/m2uKLU/mapas_y_banderas_4.png",
+          color: "#2DAD54"
+        },
+        {
+          name: "Posible Retirar",
+          abv: "PR",
+          icon: "https://image.ibb.co/kAMG0U/mapas_y_banderas_3.png",
+          color: "#F7FF00"
+        },
+        {
+          name: "A Retirar",
+          abv: "AR",
+          icon: "https://image.ibb.co/dLUfS9/mapas_y_banderas_2.png",
+          color: "#FFCC00"
+        },
+        {
+          name: "Vencido",
+          abv: "V",
+          icon: "https://image.ibb.co/n1vWZp/mapas_y_banderas_1.png",
+          color: "#FF0000"
+        },
+        {
+          name: "Retirar Urgente",
+          abv: "RU",
+          icon: "https://image.ibb.co/ip8779/mapas_y_banderas.png",
+          color: "#FF00F7"
+        }
+      ],
+
+      address_temp: "",
+      location_temp: "Cordoba",
+      showState: "ALL",
 
       data: [
         {
           nro: 15015,
-          status: 'P',
-          address: 'Antonio Machado 1874 B Villa Argentina',
-          contact: 'Sra Monica 43434343',
-          date: 'dd/mm/aa',
-          permission: 125456,
+          status: "P",
+          address: "Antonio Machado 1874 B Villa Argentina",
+          contact: "Sra Monica 43434343",
+          date: "dd/mm/aa",
+          permission: 125456
         },
         {
           nro: 15016,
-          status: 'R',
-          address: 'Antonio Machado 1874 B Villa Argentina',
-          contact: 'Sra Monica 434343',
-          date: 'dd/mm/aa',
-          permission: 125456,
+          status: "R",
+          address: "Antonio Machado 1874 B Villa Argentina",
+          contact: "Sra Monica 434343",
+          date: "dd/mm/aa",
+          permission: 125456
         },
         {
           nro: 15017,
-          status: 'E',
-          address: 'Antonio Machado 1874 B Villa Argentina',
-          contact: 'Sra Monica 123456789',
-          date: 'dd/mm/aa',
-          permission: 125456,
+          status: "E",
+          address: "Antonio Machado 1874 B Villa Argentina",
+          contact: "Sra Monica 123456789",
+          date: "dd/mm/aa",
+          permission: 125456
         },
         {
           nro: 15018,
-          status: 'A',
-          address: 'Antonio Machado 1874 B Villa Argentina',
-          contact: 'Sra Monica 12345655',
-          date: 'dd/mm/aa',
-          permission: 125456,
-        },
+          status: "A",
+          address: "Antonio Machado 1874 B Villa Argentina",
+          contact: "Sra Monica 12345655",
+          date: "dd/mm/aa",
+          permission: 125456
+        }
       ],
 
-      dataE: [
-        {
-          nro: 15017,
-          status: 'E',
-          address: 'Argentina, Buenos Aires',
-          client: 'Antonio Banderas',
-          permission: 125456,
-        },
-      ],
+      data_aux: [],
 
-      dataP: [
-        {
-          nro: 15015,
-          status: 'P',
-          address: 'Argentina, Buenos Aires',
-          client: 'Jose Daza',
-          permission: 125456,
-        },
-      ],
+      datacont: [{ name: "as" }],
 
-      dataR: [
-        {
-          nro: 15016,
-          status: 'R',
-          address: 'Argentina, Buenos Aires',
-          client: 'Francisco de Miranda',
-          permission: 125456,
-        },
-      ],
-
-      dataA: [
-        {
-          nro: 15018,
-          status: 'A',
-          address: 'Argentina, Buenos Aires',
-          client: 'Leonardo Dicaprio',
-          permission: 125456,
-        },
-      ],
-
-      datacont: [
-        {
-          cant: 15,
-          importe: '1500.00',
-          fecha: '20-03-2015',
-        },
-      ],
+      search: '',
 
       isEmpty: false,
       isBordered: false,
@@ -469,16 +524,16 @@ export default {
       isLoading: false,
       hasMobileCards: true,
 
-      selected: '',
+      selected: "",
 
       isPaginated: true,
       isPaginationSimple: false,
-      defaultSortDirection: 'asc',
+      defaultSortDirection: "asc",
       currentPage: 1,
       perPage: 4,
 
       checkedRows: [],
-      isCheck: false,
+      isCheck: false
     };
   },
 
@@ -506,27 +561,27 @@ export default {
     },
 
     searchAddress() {
-      EventBus.$emit('search', this.address_temp);
+      EventBus.$emit("search", this.address_temp);
     },
 
     googleMaps() {
       GoogleMapsLoader.load(function(google) {
-        let point = { lat: -36.539341, lng: -60.33846 };
-        let map = new google.maps.Map(document.getElementById('myMap'), {
-          zoom: 4,
-          center: point,
+        let point = { lat: -31.416666, lng: -64.183333 };
+        let map = new google.maps.Map(document.getElementById("myMap"), {
+          zoom: 6,
+          center: point
         });
         let marker = new google.maps.Marker({
           position: { lat: -36.539341, lng: -60.33846 },
           map: map,
-          icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+          icon: "https://image.ibb.co/d5gwZp/marcador_de_mapa.png"
         });
 
         let infowindow = new google.maps.InfoWindow({
-          content: 'Descripción del container',
+          content: "Descripción del container"
         });
 
-        google.maps.event.addListener(marker, 'click', function() {
+        google.maps.event.addListener(marker, "click", function() {
           // Llamamos el método open del InfoWindow
           infowindow.open(map, marker);
         });
@@ -534,14 +589,14 @@ export default {
         let marker2 = new google.maps.Marker({
           position: { lat: -32.539341, lng: -60.33846 },
           map: map,
-          icon: 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png',
+          icon: "http://maps.google.com/mapfiles/ms/icons/yellow-dot.png"
         });
 
         let infowindow2 = new google.maps.InfoWindow({
-          content: 'Descripción del container',
+          content: "Descripción del container"
         });
 
-        google.maps.event.addListener(marker2, 'click', function() {
+        google.maps.event.addListener(marker2, "click", function() {
           // Llamamos el método open del InfoWindow
           infowindow2.open(map, marker2);
         });
@@ -549,14 +604,14 @@ export default {
         let marker3 = new google.maps.Marker({
           position: { lat: -34.539341, lng: -62.33846 },
           map: map,
-          icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+          icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
         });
 
         let infowindow3 = new google.maps.InfoWindow({
-          content: 'Descripción del container',
+          content: "Descripción del container"
         });
 
-        google.maps.event.addListener(marker3, 'click', function() {
+        google.maps.event.addListener(marker3, "click", function() {
           // Llamamos el método open del InfoWindow
           infowindow3.open(map, marker3);
         });
@@ -564,14 +619,14 @@ export default {
         let marker4 = new google.maps.Marker({
           position: { lat: -38.539341, lng: -62.33846 },
           map: map,
-          icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+          icon: "http://maps.google.com/mapfiles/ms/icons/red-dot.png"
         });
 
         let infowindow4 = new google.maps.InfoWindow({
-          content: 'Descripción del container',
+          content: "Descripción del container"
         });
 
-        google.maps.event.addListener(marker4, 'click', function() {
+        google.maps.event.addListener(marker4, "click", function() {
           // Llamamos el método open del InfoWindow
           infowindow4.open(map, marker4);
         });
@@ -579,17 +634,17 @@ export default {
     },
 
     localizar(a, b) {
-      let direccion = a + ', ' + b;
+      let direccion = a + ", " + b;
 
       GoogleMapsLoader.load(google => {
-        let map = new google.maps.Map(document.getElementById('myMap'), {
-          zoom: 14,
+        let map = new google.maps.Map(document.getElementById("myMap"), {
+          zoom: 14
         });
 
         let geocoder = new google.maps.Geocoder();
 
         geocoder.geocode({ address: direccion }, (res, status) => {
-          if (status == 'OK') {
+          if (status == "OK") {
             //let result = res[0].geometry.location
             //let result_lat = res.lat()
             //let result_long = res.lng()
@@ -597,20 +652,20 @@ export default {
             map.setCenter(res[0].geometry.location);
             new google.maps.Marker({
               map: map,
-              position: res[0].geometry.location,
+              position: res[0].geometry.location
             });
           } else {
-            let mensajeError = '';
-            if (status === 'ZERO_RESULTS') {
-              mensajeError = 'No hubo resultados para la dirección ingresada.';
+            let mensajeError = "";
+            if (status === "ZERO_RESULTS") {
+              mensajeError = "No hubo resultados para la dirección ingresada.";
             } else if (
-              status === 'OVER_QUERY_LIMIT' ||
-              status === 'REQUEST_DENIED' ||
-              status === 'UNKNOWN_ERROR'
+              status === "OVER_QUERY_LIMIT" ||
+              status === "REQUEST_DENIED" ||
+              status === "UNKNOWN_ERROR"
             ) {
-              mensajeError = 'Error general del mapa.';
-            } else if (status === 'INVALID_REQUEST') {
-              mensajeError = 'Error de la web. Contacte con Name Agency.';
+              mensajeError = "Error general del mapa.";
+            } else if (status === "INVALID_REQUEST") {
+              mensajeError = "Error de la web. Contacte con Name Agency.";
             }
             alert(mensajeError);
           }
@@ -625,88 +680,99 @@ export default {
     },
 
     showStatus(status) {
-        
       GoogleMapsLoader.load(google => {
+        let infowindow = new google.maps.InfoWindow({
+          content: "Descripción del container"
+        });
 
-            let infowindow = new google.maps.InfoWindow({
-            content: 'Descripción del container',
-            });
+        if (status == "E") {
+          let point = { lat: -36.539341, lng: -60.33846 };
+          let map = new google.maps.Map(document.getElementById("myMap"), {
+            zoom: 4,
+            center: point
+          });
+          let marker = new google.maps.Marker({
+            position: { lat: -36.539341, lng: -60.33846 },
+            map: map,
+            icon: "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
+          });
+          google.maps.event.addListener(marker, "click", function() {
+            infowindow.open(map, marker);
+          });
+        } else if (status == "P") {
+          let point = { lat: -36.539341, lng: -60.33846 };
+          let map2 = new google.maps.Map(document.getElementById("myMap"), {
+            zoom: 4,
+            center: point
+          });
+          let marker2 = new google.maps.Marker({
+            position: { lat: -32.539341, lng: -60.33846 },
+            map: map2,
+            icon: "http://maps.google.com/mapfiles/ms/icons/yellow-dot.png"
+          });
+          google.maps.event.addListener(marker2, "click", function() {
+            infowindow.open(map2, marker2);
+          });
+        } else if (status == "R") {
+          let point = { lat: -36.539341, lng: -60.33846 };
+          let map3 = new google.maps.Map(document.getElementById("myMap"), {
+            zoom: 4,
+            center: point
+          });
+          let marker3 = new google.maps.Marker({
+            position: { lat: -34.539341, lng: -62.33846 },
+            map: map3,
+            icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+          });
+          google.maps.event.addListener(marker3, "click", function() {
+            infowindow.open(map3, marker3);
+          });
+        } else if (status == "A") {
+          let point = { lat: -36.539341, lng: -60.33846 };
+          let map4 = new google.maps.Map(document.getElementById("myMap"), {
+            zoom: 4,
+            center: point
+          });
 
-            if (status == 'E') {
+          let marker4 = new google.maps.Marker({
+            position: { lat: -38.539341, lng: -62.33846 },
+            map: map4,
+            icon: "http://maps.google.com/mapfiles/ms/icons/red-dot.png"
+          });
 
-                let point = { lat: -36.539341, lng: -60.33846 };
-                let map = new google.maps.Map(document.getElementById('myMap'), {
-                    zoom: 4,
-                    center: point
-                });
-                let marker = new google.maps.Marker({
-                    position: { lat: -36.539341, lng: -60.33846 },
-                    map: map,
-                    icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
-                });
-                google.maps.event.addListener(marker, 'click', function() {
-                    infowindow.open(map, marker);
-                });
-
-            } else if (status == 'P') {
-
-                let point = { lat: -36.539341, lng: -60.33846 };
-                let map2 = new google.maps.Map(document.getElementById('myMap'), {
-                    zoom: 4,
-                    center: point
-                });
-                let marker2 = new google.maps.Marker({
-                    position: { lat: -32.539341, lng: -60.33846 },
-                    map: map2,
-                    icon: 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png',
-                });
-                google.maps.event.addListener(marker2, 'click', function() {
-                    infowindow.open(map2, marker2);
-                });
-
-            } else if (status == 'R') {
-
-                let point = { lat: -36.539341, lng: -60.33846 };
-                let map3 = new google.maps.Map(document.getElementById('myMap'), {
-                    zoom: 4,
-                    center: point
-                });
-                let marker3 = new google.maps.Marker({
-                    position: { lat: -34.539341, lng: -62.33846 },
-                    map: map3,
-                    icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
-                });
-                google.maps.event.addListener(marker3, 'click', function() {
-                    infowindow.open(map3, marker3);
-                });
-
-            } else if (status == 'A') {
-
-                let point = { lat: -36.539341, lng: -60.33846 };
-                let map4 = new google.maps.Map(document.getElementById('myMap'), {
-                    zoom: 4,
-                    center: point
-                });
-
-                let marker4 = new google.maps.Marker({
-                    position: { lat: -38.539341, lng: -62.33846 },
-                    map: map4,
-                    icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
-                });
-
-                google.maps.event.addListener(marker4, 'click', function() {
-                    infowindow.open(map4, marker4);
-                });
-
-            } else{
-                this.googleMaps();
-            }
+          google.maps.event.addListener(marker4, "click", function() {
+            infowindow.open(map4, marker4);
+          });
+        } else {
+          this.googleMaps();
+        }
       });
     },
+
+    filterArray(array, text) {
+      let aux_array = [];
+      let regex = new RegExp(`${text}.*`, "i");
+
+      for (let i in array) {
+        let temp = false;
+        for (let j in array[i]) {
+          if (regex.test(array[i][j].toString()) && !temp) {
+            aux_array.push(array[i]);
+            temp = true;
+          }
+        }
+      }
+
+      return aux_array;
+    },
+
+    filter() {
+      this.data_aux = this.filterArray(this.data, this.search);
+    }
   },
 
   components: {
-    GoogleMap,
+    GoogleMap
   },
 
   mounted: function() {
@@ -714,10 +780,12 @@ export default {
 
     this.googleMaps();
 
+    this.data_aux = this.data;
+
     //this.showStatus(this.showState)
   },
 
-  watch: {},
+  watch: {}
 };
 </script>
 
