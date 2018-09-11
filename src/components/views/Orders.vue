@@ -202,27 +202,40 @@
                             </b-field>-->
 
                             <b-field grouped>
-
-                              <b-field>
-                                <b-datepicker
-                                    placeholder="Fecha de inicio"
-                                    icon="calendar-alt"
-                                    icon-pack="fas"
-                                    size="is-small"
-                                    rounded>
-                                </b-datepicker>
+                              
+                              <b-field grouped id="datefilter">
+                                <b-field>
+                                  <b-datepicker
+                                      placeholder="Fecha de inicio"
+                                      icon="calendar-alt"
+                                      icon-pack="fas"
+                                      size="is-small"
+                                      rounded
+                                      class="datefilterinput"
+                                      v-model="date_filter_one">
+                                  </b-datepicker>
+                                </b-field>
+                                <b-field>
+                                  <b-datepicker
+                                      placeholder="Fecha de fin"
+                                      icon="calendar-alt"
+                                      icon-pack="fas"
+                                      size="is-small"
+                                      rounded
+                                      class="datefilterinput"
+                                      v-model="date_filter_two">
+                                  </b-datepicker>
+                                </b-field>
+                                <b-field>
+                                  <a class="button is-small is-rounded is-info" @click.prevent="filterDate()">
+                                    <span class="icon is-small">
+                                    <i class="fas fa-search"></i>
+                                    </span>
+                                  </a>
+                                </b-field>
                               </b-field>
-                              <b-field>
-                                <b-datepicker
-                                    placeholder="Fecha de fin"
-                                    icon="calendar-alt"
-                                    icon-pack="fas"
-                                    size="is-small"
-                                    rounded>
-                                </b-datepicker>
-                              </b-field>
 
-                              <b-field grouped>
+                              <b-field grouped id="textfilter">
 
                                 <p class="control has-icons-left">
                                   <input class="input is-rounded is-small" type="text" placeholder="Buscar" @keyup="filter()" v-model="search">
@@ -274,19 +287,15 @@
                                 {{props.row.nro}}
                             </b-table-column>
 
-                            <b-table-column field="status" label="Estado" width="50" centered sortable>
+                            <b-table-column field="status" label="Estado" width="20" centered sortable>
                                 <b-tag 
-                                :type="props.row.status == 'P' ? 'is-warning' :
-                                props.row.status == 'R' ? 'is-info':
-                                props.row.status == 'E' ? 'is-success': 'is-danger'">
+                                :type="`is-${props.row.status.toLowerCase()}`">
 
-                                {{ props.row.status == 'P' ? 'Pendiente' :
-                                props.row.status == 'R' ? 'Retirado':
-                                props.row.status == 'E' ? 'Entregado': 'A retirar'}}
+                                {{ status.find(x => {return x.abv == props.row.status}).name }}
                                 </b-tag>
                             </b-table-column>
 
-                            <b-table-column field="address" label="Dirección"  width="300" centered sortable>
+                            <b-table-column field="address" label="Dirección"  width="250" centered sortable>
                                 <div v-if="checkedRows.length > 0">
                                     <div v-if="checkedRows[0].nro == props.row.nro">
                                         <b-field>
@@ -404,7 +413,7 @@
 
 <script>
 import GoogleMap from "@/components/views/GoogleMap";
-import { EventBus } from "@/vueBus.js";
+//import { EventBus } from "@/vueBus.js";
 import GoogleMapsLoader from "google-maps";
 
 /*
@@ -478,33 +487,57 @@ export default {
         {
           nro: 15015,
           status: "P",
-          address: "Antonio Machado 1874 B Villa Argentina",
-          contact: "Sra Monica 43434343",
-          date: "dd/mm/aa",
+          address: "La Rioja Cordoba Argentina",
+          contact: "Luis Antonio 451254521",
+          date: "06/09/2018",
           permission: 125456
         },
         {
           nro: 15016,
-          status: "R",
-          address: "Antonio Machado 1874 B Villa Argentina",
+          status: "AE",
+          address: "Villa Maria Cordoba Argentina",
           contact: "Sra Monica 434343",
-          date: "dd/mm/aa",
+          date: "07/09/2018",
           permission: 125456
         },
         {
           nro: 15017,
           status: "E",
-          address: "Antonio Machado 1874 B Villa Argentina",
-          contact: "Sra Monica 123456789",
-          date: "dd/mm/aa",
+          address: "Rio Cuarto Cordoba Argentina",
+          contact: "Ramon Hernandez 123456789",
+          date: "10/09/2018",
           permission: 125456
         },
         {
           nro: 15018,
-          status: "A",
-          address: "Antonio Machado 1874 B Villa Argentina",
-          contact: "Sra Monica 12345655",
-          date: "dd/mm/aa",
+          status: "PR",
+          address: "San Luis Cordoba Argentina",
+          contact: "Marcos Perez Jimenez 1203210",
+          date: "08/09/2018",
+          permission: 125456
+        },
+        {
+          nro: 15019,
+          status: "AR",
+          address: "Mendoza Cordoba Argentina",
+          contact: "Simon Bolivar 4564111",
+          date: "08/09/2018",
+          permission: 125456
+        },
+        {
+          nro: 15020,
+          status: "V",
+          address: "San Juan Cordoba Argentina",
+          contact: "Jose Daza 2418784111",
+          date: "11/09/2018",
+          permission: 125456
+        },
+        {
+          nro: 15021,
+          status: "RU",
+          address: "Santa Fe Cordoba Argentina",
+          contact: "Leonardo Dicaprio 2418784111",
+          date: "01/09/2018",
           permission: 125456
         }
       ],
@@ -514,6 +547,8 @@ export default {
       datacont: [{ name: "as" }],
 
       search: '',
+      date_filter_one: '',
+      date_filter_two: '',
 
       isEmpty: false,
       isBordered: false,
@@ -556,14 +591,6 @@ export default {
       }
     },
 
-    isFocusInput() {
-      this.$refs.isfocus.focus();
-    },
-
-    searchAddress() {
-      EventBus.$emit("search", this.address_temp);
-    },
-
     googleMaps() {
       GoogleMapsLoader.load(function(google) {
         let point = { lat: -31.416666, lng: -64.183333 };
@@ -571,6 +598,19 @@ export default {
           zoom: 6,
           center: point
         });
+
+
+        for (let i in this.data){
+          let icon = '';
+          for (let j in this.status){
+            if(this.data[i].status == this.status[j].abv){
+              icon = this.status[j].icon
+            }
+          }
+          this.addMarkerForAddress(map, this.data[i].address, icon)
+        }
+        
+
         let marker = new google.maps.Marker({
           position: { lat: -36.539341, lng: -60.33846 },
           map: map,
@@ -612,7 +652,6 @@ export default {
         });
 
         google.maps.event.addListener(marker3, "click", function() {
-          // Llamamos el método open del InfoWindow
           infowindow3.open(map, marker3);
         });
 
@@ -631,6 +670,7 @@ export default {
           infowindow4.open(map, marker4);
         });
       });
+
     },
 
     localizar(a, b) {
@@ -645,15 +685,13 @@ export default {
 
         geocoder.geocode({ address: direccion }, (res, status) => {
           if (status == "OK") {
-            //let result = res[0].geometry.location
-            //let result_lat = res.lat()
-            //let result_long = res.lng()
 
             map.setCenter(res[0].geometry.location);
             new google.maps.Marker({
               map: map,
               position: res[0].geometry.location
             });
+
           } else {
             let mensajeError = "";
             if (status === "ZERO_RESULTS") {
@@ -673,13 +711,58 @@ export default {
       });
     },
 
+    addMarkerForAddress(map, address, icon){
+
+      GoogleMapsLoader.load(google => {
+
+        let geocoder = new google.maps.Geocoder();
+
+        geocoder.geocode({ address: address }, (res, status) => {
+          if (status == "OK") {
+
+            map.setCenter(res[0].geometry.location);
+            new google.maps.Marker({
+              map: map,
+              position: res[0].geometry.location,
+              icon: icon
+            });
+
+            /*let infowindow = new google.maps.InfoWindow({
+              content: "Descripción del container"
+            });
+
+            google.maps.event.addListener(marker, "click", function() {
+              infowindow.open(map, marker);
+            });*/
+
+          } else {
+            let mensajeError = "";
+            if (status === "ZERO_RESULTS") {
+              mensajeError = "No hubo resultados para la dirección ingresada.";
+            } else if (
+              status === "OVER_QUERY_LIMIT" ||
+              status === "REQUEST_DENIED" ||
+              status === "UNKNOWN_ERROR"
+            ) {
+              mensajeError = "Error general del mapa.";
+            } else if (status === "INVALID_REQUEST") {
+              mensajeError = "Error de la web. Contacte con Name Agency.";
+            }
+            alert(mensajeError);
+          }
+        });
+
+      });
+
+    },
+
     focusAddress() {
       this.$nextTick(() => {
         this.$refs.isfocus.focus();
       });
     },
 
-    showStatus(status) {
+    /*showStatus(status) {
       GoogleMapsLoader.load(google => {
         let infowindow = new google.maps.InfoWindow({
           content: "Descripción del container"
@@ -747,7 +830,7 @@ export default {
           this.googleMaps();
         }
       });
-    },
+    },*/
 
     filterArray(array, text) {
       let aux_array = [];
@@ -768,7 +851,11 @@ export default {
 
     filter() {
       this.data_aux = this.filterArray(this.data, this.search);
-    }
+    },
+
+    /*fiterDate(start, end){
+
+    }*/
   },
 
   components: {
@@ -776,11 +863,12 @@ export default {
   },
 
   mounted: function() {
+
+    this.data_aux = this.data;
+
     this.focusAddress();
 
     this.googleMaps();
-
-    this.data_aux = this.data;
 
     //this.showStatus(this.showState)
   },
@@ -860,6 +948,14 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+#datefilter{
+  width: 27%;
+}
+
+.datefilterinput{
+  width: 11em;
 }
 </style>
 
