@@ -135,7 +135,6 @@
             <div class="column is-7">
                 <div class="card">
                     <div class="card-content">
-                        <!--<google-map class="map"/>-->
                         <div id="myMap"></div>
                     </div>
                 </div>
@@ -153,53 +152,6 @@
                         <p class="title is-6 has-text-centered">Pedidos Comprometidos para la fecha: dd-mm-aaaa</p>
 
                         <section>
-                            <!--<b-field>
-
-                                <b-radio-button v-model="showState"
-                                    native-value="ALL"
-                                    type="is-ru"
-                                    size="is-small"
-                                    @click.native="showStatus('ALL')">
-                                    <b-icon icon="eye" pack="fas"></b-icon>
-                                    <span>Todos</span>
-                                </b-radio-button>
-
-                                <b-radio-button v-model="showState"
-                                    native-value="E"
-                                    type="is-success"
-                                    size="is-small"
-                                    @click.native="showStatus('E')">
-                                    <b-icon icon="check" pack="fas"></b-icon>
-                                    <span>Entregado</span>
-                                </b-radio-button>
-
-                                <b-radio-button v-model="showState"
-                                    native-value="P"
-                                    type="is-warning"
-                                    size="is-small"
-                                    @click.native="showStatus('P')">
-                                    <b-icon icon="exclamation" pack="fas"></b-icon>
-                                    <span>Pendiente</span>
-                                </b-radio-button>
-
-                                <b-radio-button v-model="showState"
-                                    native-value="R"
-                                    type="is-info"
-                                    size="is-small"
-                                    @click.native="showStatus('R')">
-                                    <b-icon icon="check-double" pack="fas"></b-icon>
-                                    <span>Retirado</span>
-                                </b-radio-button>
-
-                                <b-radio-button v-model="showState"
-                                    native-value="A"
-                                    type="is-danger"
-                                    size="is-small"
-                                    @click.native="showStatus('A')">
-                                    <b-icon icon="people-carry" pack="fas"></b-icon>
-                                    <span>A Retirar</span>
-                                </b-radio-button>
-                            </b-field>-->
 
                             <b-field grouped>
                               
@@ -238,21 +190,92 @@
                               <b-field grouped id="textfilter">
 
                                 <p class="control has-icons-left">
-                                  <input class="input is-rounded is-small" type="text" placeholder="Buscar" @keyup="filter()" v-model="search">
+                                  <input class="input is-rounded is-small" type="text" placeholder="Buscar" @keypress.enter="filter()" v-model="search">
                                   <span class="icon is-small is-left">
                                       <i class="fas fa-search"></i>
                                   </span>
                                 </p>
                                   
                               </b-field>
+
+                              <b-field>
+
+                                <b-radio-button v-model="search"
+                                    native-value=""
+                                    type="is-black"
+                                    size="is-small"
+                                    @click.native="filterStatus('ALL')">
+                                    <b-icon icon="eye" pack="fas"></b-icon>
+                                    <span>Todos</span>
+                                </b-radio-button>
+
+                                <b-radio-button v-model="search"
+                                    native-value="P"
+                                    type="is-p"
+                                    size="is-small"
+                                    @click.native="filterStatus('P')">
+                                    <b-icon icon="exclamation" pack="fas"></b-icon>
+                                    <span>P</span>
+                                </b-radio-button>
+
+                                <b-radio-button v-model="search"
+                                    native-value="AE"
+                                    type="is-ae"
+                                    size="is-small"
+                                    @click.native="filterStatus('AE')">
+                                    <b-icon icon="check" pack="fas"></b-icon>
+                                    <span>AE</span>
+                                </b-radio-button>
+
+                                <b-radio-button v-model="search"
+                                    native-value="E"
+                                    type="is-e"
+                                    size="is-small"
+                                    @click.native="filterStatus('E')">
+                                    <b-icon icon="check-double" pack="fas"></b-icon>
+                                    <span>E</span>
+                                </b-radio-button>
+
+                                <b-radio-button v-model="search"
+                                    native-value="PR"
+                                    type="is-pr"
+                                    size="is-small"
+                                    @click.native="filterStatus('PR')">
+                                    <b-icon icon="people-carry" pack="fas"></b-icon>
+                                    <span>PR</span>
+                                </b-radio-button>
+
+                                <b-radio-button v-model="search"
+                                    native-value="AR"
+                                    type="is-ar"
+                                    size="is-small"
+                                    @click.native="filterStatus('AR')">
+                                    <b-icon icon="shopping-cart" pack="fas"></b-icon>
+                                    <span>AR</span>
+                                </b-radio-button>
+
+                                <b-radio-button v-model="search"
+                                    native-value="V"
+                                    type="is-v"
+                                    size="is-small"
+                                    @click.native="filterStatus('V')">
+                                    <b-icon icon="frown-open" pack="fas"></b-icon>
+                                    <span>V</span>
+                                </b-radio-button>
+
+                                <b-radio-button v-model="search"
+                                    native-value="RU"
+                                    type="is-ru"
+                                    size="is-small"
+                                    @click.native="filterStatus('RU')">
+                                    <b-icon icon="exclamation-triangle" pack="fas"></b-icon>
+                                    <span>RU</span>
+                                </b-radio-button>
+                                  
+                              </b-field>
                                 
                             </b-field>
 
-                            
-
-                            
-
-                           
                         </section>
 
                         
@@ -487,7 +510,7 @@ export default {
         {
           nro: 15015,
           status: "P",
-          address: "La Rioja Cordoba Argentina",
+          address: "La Rioja Argentina",
           contact: "Luis Antonio 451254521",
           date: "06/09/2018",
           permission: 125456
@@ -495,7 +518,7 @@ export default {
         {
           nro: 15016,
           status: "AE",
-          address: "Villa Maria Cordoba Argentina",
+          address: "Villa Maria Argentina",
           contact: "Sra Monica 434343",
           date: "07/09/2018",
           permission: 125456
@@ -503,7 +526,7 @@ export default {
         {
           nro: 15017,
           status: "E",
-          address: "Rio Cuarto Cordoba Argentina",
+          address: "Rio Cuarto Argentina",
           contact: "Ramon Hernandez 123456789",
           date: "10/09/2018",
           permission: 125456
@@ -511,7 +534,7 @@ export default {
         {
           nro: 15018,
           status: "PR",
-          address: "San Luis Cordoba Argentina",
+          address: "San Luis Argentina",
           contact: "Marcos Perez Jimenez 1203210",
           date: "08/09/2018",
           permission: 125456
@@ -519,7 +542,7 @@ export default {
         {
           nro: 15019,
           status: "AR",
-          address: "Mendoza Cordoba Argentina",
+          address: "Mendoza Argentina",
           contact: "Simon Bolivar 4564111",
           date: "08/09/2018",
           permission: 125456
@@ -527,7 +550,7 @@ export default {
         {
           nro: 15020,
           status: "V",
-          address: "San Juan Cordoba Argentina",
+          address: "San Juan Argentina",
           contact: "Jose Daza 2418784111",
           date: "11/09/2018",
           permission: 125456
@@ -535,7 +558,7 @@ export default {
         {
           nro: 15021,
           status: "RU",
-          address: "Santa Fe Cordoba Argentina",
+          address: "Santa Fe Argentina",
           contact: "Leonardo Dicaprio 2418784111",
           date: "01/09/2018",
           permission: 125456
@@ -591,84 +614,50 @@ export default {
       }
     },
 
-    googleMaps() {
-      GoogleMapsLoader.load(function(google) {
+    initializeGoogleMaps(){
+
+      GoogleMapsLoader.load(google => {
+
         let point = { lat: -31.416666, lng: -64.183333 };
         let map = new google.maps.Map(document.getElementById("myMap"), {
           zoom: 6,
           center: point
         });
 
-
-        for (let i in this.data){
+        for (let i in this.data_aux){
           let icon = '';
           for (let j in this.status){
-            if(this.data[i].status == this.status[j].abv){
+            if(this.data_aux[i].status == this.status[j].abv){
               icon = this.status[j].icon
             }
           }
-          this.addMarkerForAddress(map, this.data[i].address, icon)
+          let geocoder = new google.maps.Geocoder();
+          geocoder.geocode({ address: this.data_aux[i].address }, (res, status) => {
+            if (status == "OK") {
+              map.setCenter(res[0].geometry.location);
+              new google.maps.Marker({
+                map: map,
+                position: res[0].geometry.location,
+                icon
+              });
+            } /*else {
+              let mensajeError = "";
+              if (status === "ZERO_RESULTS") {
+                mensajeError = "No hubo resultados para la dirección ingresada.";
+              } else if (
+                status === "OVER_QUERY_LIMIT" ||
+                status === "REQUEST_DENIED" ||
+                status === "UNKNOWN_ERROR"
+              ) {
+                mensajeError = "Error general del mapa.";
+              } else if (status === "INVALID_REQUEST") {
+                mensajeError = "Error de la web. Contacte con Name Agency.";
+              }
+              alert(mensajeError);
+            }*/
+          });
         }
-        
 
-        let marker = new google.maps.Marker({
-          position: { lat: -36.539341, lng: -60.33846 },
-          map: map,
-          icon: "https://image.ibb.co/d5gwZp/marcador_de_mapa.png"
-        });
-
-        let infowindow = new google.maps.InfoWindow({
-          content: "Descripción del container"
-        });
-
-        google.maps.event.addListener(marker, "click", function() {
-          // Llamamos el método open del InfoWindow
-          infowindow.open(map, marker);
-        });
-
-        let marker2 = new google.maps.Marker({
-          position: { lat: -32.539341, lng: -60.33846 },
-          map: map,
-          icon: "http://maps.google.com/mapfiles/ms/icons/yellow-dot.png"
-        });
-
-        let infowindow2 = new google.maps.InfoWindow({
-          content: "Descripción del container"
-        });
-
-        google.maps.event.addListener(marker2, "click", function() {
-          // Llamamos el método open del InfoWindow
-          infowindow2.open(map, marker2);
-        });
-
-        let marker3 = new google.maps.Marker({
-          position: { lat: -34.539341, lng: -62.33846 },
-          map: map,
-          icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
-        });
-
-        let infowindow3 = new google.maps.InfoWindow({
-          content: "Descripción del container"
-        });
-
-        google.maps.event.addListener(marker3, "click", function() {
-          infowindow3.open(map, marker3);
-        });
-
-        let marker4 = new google.maps.Marker({
-          position: { lat: -38.539341, lng: -62.33846 },
-          map: map,
-          icon: "http://maps.google.com/mapfiles/ms/icons/red-dot.png"
-        });
-
-        let infowindow4 = new google.maps.InfoWindow({
-          content: "Descripción del container"
-        });
-
-        google.maps.event.addListener(marker4, "click", function() {
-          // Llamamos el método open del InfoWindow
-          infowindow4.open(map, marker4);
-        });
       });
 
     },
@@ -711,126 +700,11 @@ export default {
       });
     },
 
-    addMarkerForAddress(map, address, icon){
-
-      GoogleMapsLoader.load(google => {
-
-        let geocoder = new google.maps.Geocoder();
-
-        geocoder.geocode({ address: address }, (res, status) => {
-          if (status == "OK") {
-
-            map.setCenter(res[0].geometry.location);
-            new google.maps.Marker({
-              map: map,
-              position: res[0].geometry.location,
-              icon: icon
-            });
-
-            /*let infowindow = new google.maps.InfoWindow({
-              content: "Descripción del container"
-            });
-
-            google.maps.event.addListener(marker, "click", function() {
-              infowindow.open(map, marker);
-            });*/
-
-          } else {
-            let mensajeError = "";
-            if (status === "ZERO_RESULTS") {
-              mensajeError = "No hubo resultados para la dirección ingresada.";
-            } else if (
-              status === "OVER_QUERY_LIMIT" ||
-              status === "REQUEST_DENIED" ||
-              status === "UNKNOWN_ERROR"
-            ) {
-              mensajeError = "Error general del mapa.";
-            } else if (status === "INVALID_REQUEST") {
-              mensajeError = "Error de la web. Contacte con Name Agency.";
-            }
-            alert(mensajeError);
-          }
-        });
-
-      });
-
-    },
-
     focusAddress() {
       this.$nextTick(() => {
         this.$refs.isfocus.focus();
       });
     },
-
-    /*showStatus(status) {
-      GoogleMapsLoader.load(google => {
-        let infowindow = new google.maps.InfoWindow({
-          content: "Descripción del container"
-        });
-
-        if (status == "E") {
-          let point = { lat: -36.539341, lng: -60.33846 };
-          let map = new google.maps.Map(document.getElementById("myMap"), {
-            zoom: 4,
-            center: point
-          });
-          let marker = new google.maps.Marker({
-            position: { lat: -36.539341, lng: -60.33846 },
-            map: map,
-            icon: "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
-          });
-          google.maps.event.addListener(marker, "click", function() {
-            infowindow.open(map, marker);
-          });
-        } else if (status == "P") {
-          let point = { lat: -36.539341, lng: -60.33846 };
-          let map2 = new google.maps.Map(document.getElementById("myMap"), {
-            zoom: 4,
-            center: point
-          });
-          let marker2 = new google.maps.Marker({
-            position: { lat: -32.539341, lng: -60.33846 },
-            map: map2,
-            icon: "http://maps.google.com/mapfiles/ms/icons/yellow-dot.png"
-          });
-          google.maps.event.addListener(marker2, "click", function() {
-            infowindow.open(map2, marker2);
-          });
-        } else if (status == "R") {
-          let point = { lat: -36.539341, lng: -60.33846 };
-          let map3 = new google.maps.Map(document.getElementById("myMap"), {
-            zoom: 4,
-            center: point
-          });
-          let marker3 = new google.maps.Marker({
-            position: { lat: -34.539341, lng: -62.33846 },
-            map: map3,
-            icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
-          });
-          google.maps.event.addListener(marker3, "click", function() {
-            infowindow.open(map3, marker3);
-          });
-        } else if (status == "A") {
-          let point = { lat: -36.539341, lng: -60.33846 };
-          let map4 = new google.maps.Map(document.getElementById("myMap"), {
-            zoom: 4,
-            center: point
-          });
-
-          let marker4 = new google.maps.Marker({
-            position: { lat: -38.539341, lng: -62.33846 },
-            map: map4,
-            icon: "http://maps.google.com/mapfiles/ms/icons/red-dot.png"
-          });
-
-          google.maps.event.addListener(marker4, "click", function() {
-            infowindow.open(map4, marker4);
-          });
-        } else {
-          this.googleMaps();
-        }
-      });
-    },*/
 
     filterArray(array, text) {
       let aux_array = [];
@@ -851,11 +725,27 @@ export default {
 
     filter() {
       this.data_aux = this.filterArray(this.data, this.search);
+      this.initializeGoogleMaps();
     },
 
     /*fiterDate(start, end){
 
     }*/
+
+    filterStatus(status){
+      let temp = [];
+      if(status!='ALL'){
+        temp.push(this.data.find(x => {
+          return x.status == status
+        }));
+      }else{
+        for (let i in this.data){
+          temp.push(this.data[i])
+        }        
+      }
+      this.data_aux = temp;
+      this.initializeGoogleMaps();
+    }
   },
 
   components: {
@@ -868,7 +758,9 @@ export default {
 
     this.focusAddress();
 
-    this.googleMaps();
+    //this.googleMaps();
+
+    this.initializeGoogleMaps();
 
     //this.showStatus(this.showState)
   },
@@ -951,11 +843,16 @@ export default {
 }
 
 #datefilter{
-  width: 27%;
+  width: 30%;
+  margin-left: 8%;
 }
 
 .datefilterinput{
   width: 11em;
+}
+
+#textfilter{
+  width: 20%;
 }
 </style>
 
