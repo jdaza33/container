@@ -209,68 +209,96 @@
                                     <span>Todos</span>
                                 </b-radio-button>
 
-                                <b-radio-button v-model="search"
-                                    native-value="P"
-                                    type="is-p"
-                                    size="is-small"
-                                    @click.native="filterStatus('P')">
-                                    <b-icon icon="exclamation" pack="fas"></b-icon>
-                                    <span>P</span>
-                                </b-radio-button>
+                                <b-tooltip
+                                    label="Pendiente"
+                                    animated>
+                                    <b-radio-button v-model="search"
+                                      native-value="P"
+                                      type="is-p"
+                                      size="is-small"
+                                      @click.native="filterStatus('P')">
+                                      <b-icon icon="exclamation" pack="fas"></b-icon>
+                                      <span>P</span>
+                                  </b-radio-button>
+                                </b-tooltip>
 
-                                <b-radio-button v-model="search"
-                                    native-value="AE"
-                                    type="is-ae"
-                                    size="is-small"
-                                    @click.native="filterStatus('AE')">
-                                    <b-icon icon="check" pack="fas"></b-icon>
-                                    <span>AE</span>
-                                </b-radio-button>
+                                <b-tooltip
+                                    label="A Enviar"
+                                    animated>
+                                    <b-radio-button v-model="search"
+                                      native-value="AE"
+                                      type="is-ae"
+                                      size="is-small"
+                                      @click.native="filterStatus('AE')">
+                                      <b-icon icon="check" pack="fas"></b-icon>
+                                      <span>AE</span>
+                                  </b-radio-button>
+                                </b-tooltip>
 
-                                <b-radio-button v-model="search"
-                                    native-value="E"
-                                    type="is-e"
-                                    size="is-small"
-                                    @click.native="filterStatus('E')">
-                                    <b-icon icon="check-double" pack="fas"></b-icon>
-                                    <span>E</span>
-                                </b-radio-button>
+                                <b-tooltip
+                                    label="Entregado"
+                                    animated>
+                                    <b-radio-button v-model="search"
+                                      native-value="E"
+                                      type="is-e"
+                                      size="is-small"
+                                      @click.native="filterStatus('E')">
+                                      <b-icon icon="check-double" pack="fas"></b-icon>
+                                      <span>E</span>
+                                  </b-radio-button>
+                                </b-tooltip>
 
-                                <b-radio-button v-model="search"
-                                    native-value="PR"
-                                    type="is-pr"
-                                    size="is-small"
-                                    @click.native="filterStatus('PR')">
-                                    <b-icon icon="people-carry" pack="fas"></b-icon>
-                                    <span>PR</span>
-                                </b-radio-button>
+                                <b-tooltip
+                                    label="Posible Retirar"
+                                    animated>
+                                    <b-radio-button v-model="search"
+                                      native-value="PR"
+                                      type="is-pr"
+                                      size="is-small"
+                                      @click.native="filterStatus('PR')">
+                                      <b-icon icon="people-carry" pack="fas"></b-icon>
+                                      <span>PR</span>
+                                  </b-radio-button>
+                                </b-tooltip>
 
-                                <b-radio-button v-model="search"
+                                <b-tooltip
+                                  label="A Retirar"
+                                  animated>
+                                  <b-radio-button v-model="search"
                                     native-value="AR"
                                     type="is-ar"
                                     size="is-small"
                                     @click.native="filterStatus('AR')">
                                     <b-icon icon="shopping-cart" pack="fas"></b-icon>
                                     <span>AR</span>
-                                </b-radio-button>
+                                  </b-radio-button>
+                                </b-tooltip>
 
-                                <b-radio-button v-model="search"
-                                    native-value="V"
-                                    type="is-v"
-                                    size="is-small"
-                                    @click.native="filterStatus('V')">
-                                    <b-icon icon="frown-open" pack="fas"></b-icon>
-                                    <span>V</span>
-                                </b-radio-button>
+                                <b-tooltip
+                                  label="Vencido"
+                                  animated>
+                                  <b-radio-button v-model="search"
+                                      native-value="V"
+                                      type="is-v"
+                                      size="is-small"
+                                      @click.native="filterStatus('V')">
+                                      <b-icon icon="frown-open" pack="fas"></b-icon>
+                                      <span>V</span>
+                                  </b-radio-button>
+                                </b-tooltip>
 
-                                <b-radio-button v-model="search"
-                                    native-value="RU"
-                                    type="is-ru"
-                                    size="is-small"
-                                    @click.native="filterStatus('RU')">
-                                    <b-icon icon="exclamation-triangle" pack="fas"></b-icon>
-                                    <span>RU</span>
-                                </b-radio-button>
+                                <b-tooltip
+                                  label="Retirar Urgente"
+                                  animated>
+                                  <b-radio-button v-model="search"
+                                      native-value="RU"
+                                      type="is-ru"
+                                      size="is-small"
+                                      @click.native="filterStatus('RU')">
+                                      <b-icon icon="exclamation-triangle" pack="fas"></b-icon>
+                                      <span>RU</span>
+                                  </b-radio-button>
+                                </b-tooltip>
                                   
                               </b-field>
                                 
@@ -289,12 +317,8 @@
                         :loading="isLoading"
                         :focusable="isFocusable"
                         :mobile-cards="hasMobileCards"
-                        
-                        :paginated="isPaginated"
-                        :per-page="perPage"
-                        :current-page.sync="currentPage"
-                        :pagination-simple="isPaginationSimple"
-                        :default-sort-direction="defaultSortDirection">
+                        class="is-scrollable"
+                        >
 
                         <template slot-scope="props">
 
@@ -435,9 +459,9 @@
 </template>
 
 <script>
-import GoogleMap from "@/components/views/GoogleMap";
+import GoogleMap from '@/components/views/GoogleMap';
 //import { EventBus } from "@/vueBus.js";
-import GoogleMapsLoader from "google-maps";
+import GoogleMapsLoader from 'google-maps';
 
 /*
 Pendiente P (#0095FF) --> https://image.ibb.co/goBifU/mapas_y_banderas_6.png
@@ -451,123 +475,123 @@ Retirar Urgente RU (#FF00F7) --> https://image.ibb.co/ip8779/mapas_y_banderas.pn
 
 export default {
   data() {
-    GoogleMapsLoader.KEY = "AIzaSyADO0m7x04v9uSYGHh9n6Qk0ds0S76ta-E";
-    GoogleMapsLoader.LIBRARIES = ["geometry", "places"];
-    GoogleMapsLoader.LANGUAGE = "es";
+    GoogleMapsLoader.KEY = 'AIzaSyADO0m7x04v9uSYGHh9n6Qk0ds0S76ta-E';
+    GoogleMapsLoader.LIBRARIES = ['geometry', 'places'];
+    GoogleMapsLoader.LANGUAGE = 'es';
 
     return {
       //Datos Estados
       status: [
         {
-          name: "Pendiente",
-          abv: "P",
-          icon: "https://image.ibb.co/goBifU/mapas_y_banderas_6.png",
-          color: "#0095FF"
+          name: 'Pendiente',
+          abv: 'P',
+          icon: 'https://image.ibb.co/goBifU/mapas_y_banderas_6.png',
+          color: '#0095FF',
         },
         {
-          name: "A Enviar",
-          abv: "AE",
-          icon: "https://image.ibb.co/k9p8Ep/mapas_y_banderas_5.png",
-          color: "#00FF4D"
+          name: 'A Enviar',
+          abv: 'AE',
+          icon: 'https://image.ibb.co/k9p8Ep/mapas_y_banderas_5.png',
+          color: '#00FF4D',
         },
         {
-          name: "Entregado",
-          abv: "E",
-          icon: "https://image.ibb.co/m2uKLU/mapas_y_banderas_4.png",
-          color: "#2DAD54"
+          name: 'Entregado',
+          abv: 'E',
+          icon: 'https://image.ibb.co/m2uKLU/mapas_y_banderas_4.png',
+          color: '#2DAD54',
         },
         {
-          name: "Posible Retirar",
-          abv: "PR",
-          icon: "https://image.ibb.co/kAMG0U/mapas_y_banderas_3.png",
-          color: "#F7FF00"
+          name: 'Posible Retirar',
+          abv: 'PR',
+          icon: 'https://image.ibb.co/kAMG0U/mapas_y_banderas_3.png',
+          color: '#F7FF00',
         },
         {
-          name: "A Retirar",
-          abv: "AR",
-          icon: "https://image.ibb.co/dLUfS9/mapas_y_banderas_2.png",
-          color: "#FFCC00"
+          name: 'A Retirar',
+          abv: 'AR',
+          icon: 'https://image.ibb.co/dLUfS9/mapas_y_banderas_2.png',
+          color: '#FFCC00',
         },
         {
-          name: "Vencido",
-          abv: "V",
-          icon: "https://image.ibb.co/n1vWZp/mapas_y_banderas_1.png",
-          color: "#FF0000"
+          name: 'Vencido',
+          abv: 'V',
+          icon: 'https://image.ibb.co/n1vWZp/mapas_y_banderas_1.png',
+          color: '#FF0000',
         },
         {
-          name: "Retirar Urgente",
-          abv: "RU",
-          icon: "https://image.ibb.co/ip8779/mapas_y_banderas.png",
-          color: "#FF00F7"
-        }
+          name: 'Retirar Urgente',
+          abv: 'RU',
+          icon: 'https://image.ibb.co/ip8779/mapas_y_banderas.png',
+          color: '#FF00F7',
+        },
       ],
 
-      address_temp: "",
-      location_temp: "Cordoba",
-      showState: "ALL",
+      address_temp: '',
+      location_temp: 'Cordoba',
+      showState: 'ALL',
 
       data: [
         {
           nro: 15015,
-          status: "P",
-          address: "La Rioja Argentina",
-          contact: "Luis Antonio 451254521",
-          date: "06/09/2018",
-          permission: 125456
+          status: 'P',
+          address: 'La Rioja Argentina',
+          contact: 'Luis Antonio 451254521',
+          date: '06/09/2018',
+          permission: 125456,
         },
         {
           nro: 15016,
-          status: "AE",
-          address: "Villa Maria Argentina",
-          contact: "Sra Monica 434343",
-          date: "07/09/2018",
-          permission: 125456
+          status: 'AE',
+          address: 'Villa Maria Argentina',
+          contact: 'Sra Monica 434343',
+          date: '07/09/2018',
+          permission: 125456,
         },
         {
           nro: 15017,
-          status: "E",
-          address: "Rio Cuarto Argentina",
-          contact: "Ramon Hernandez 123456789",
-          date: "10/09/2018",
-          permission: 125456
+          status: 'E',
+          address: 'Rio Cuarto Argentina',
+          contact: 'Ramon Hernandez 123456789',
+          date: '10/09/2018',
+          permission: 125456,
         },
         {
           nro: 15018,
-          status: "PR",
-          address: "San Luis Argentina",
-          contact: "Marcos Perez Jimenez 1203210",
-          date: "08/09/2018",
-          permission: 125456
+          status: 'PR',
+          address: 'San Luis Argentina',
+          contact: 'Marcos Perez Jimenez 1203210',
+          date: '08/09/2018',
+          permission: 125456,
         },
         {
           nro: 15019,
-          status: "AR",
-          address: "Mendoza Argentina",
-          contact: "Simon Bolivar 4564111",
-          date: "08/09/2018",
-          permission: 125456
+          status: 'AR',
+          address: 'Mendoza Argentina',
+          contact: 'Simon Bolivar 4564111',
+          date: '08/09/2018',
+          permission: 125456,
         },
         {
           nro: 15020,
-          status: "V",
-          address: "San Juan Argentina",
-          contact: "Jose Daza 2418784111",
-          date: "11/09/2018",
-          permission: 125456
+          status: 'V',
+          address: 'San Juan Argentina',
+          contact: 'Jose Daza 2418784111',
+          date: '11/09/2018',
+          permission: 125456,
         },
         {
           nro: 15021,
-          status: "RU",
-          address: "Santa Fe Argentina",
-          contact: "Leonardo Dicaprio 2418784111",
-          date: "01/09/2018",
-          permission: 125456
-        }
+          status: 'RU',
+          address: 'Santa Fe Argentina',
+          contact: 'Leonardo Dicaprio 2418784111',
+          date: '01/09/2018',
+          permission: 125456,
+        },
       ],
 
       data_aux: [],
 
-      datacont: [{ name: "as" }],
+      datacont: [{ name: 'as' }],
 
       search: '',
       date_filter_one: '',
@@ -582,16 +606,16 @@ export default {
       isLoading: false,
       hasMobileCards: true,
 
-      selected: "",
+      selected: '',
 
       isPaginated: true,
       isPaginationSimple: false,
-      defaultSortDirection: "asc",
+      defaultSortDirection: 'asc',
       currentPage: 1,
       perPage: 4,
 
       checkedRows: [],
-      isCheck: false
+      isCheck: false,
     };
   },
 
@@ -614,33 +638,33 @@ export default {
       }
     },
 
-    initializeGoogleMaps(){
-
+    initializeGoogleMaps() {
       GoogleMapsLoader.load(google => {
-
         let point = { lat: -31.416666, lng: -64.183333 };
-        let map = new google.maps.Map(document.getElementById("myMap"), {
+        let map = new google.maps.Map(document.getElementById('myMap'), {
           zoom: 6,
-          center: point
+          center: point,
         });
 
-        for (let i in this.data_aux){
+        for (let i in this.data_aux) {
           let icon = '';
-          for (let j in this.status){
-            if(this.data_aux[i].status == this.status[j].abv){
-              icon = this.status[j].icon
+          for (let j in this.status) {
+            if (this.data_aux[i].status == this.status[j].abv) {
+              icon = this.status[j].icon;
             }
           }
           let geocoder = new google.maps.Geocoder();
-          geocoder.geocode({ address: this.data_aux[i].address }, (res, status) => {
-            if (status == "OK") {
-              map.setCenter(res[0].geometry.location);
-              new google.maps.Marker({
-                map: map,
-                position: res[0].geometry.location,
-                icon
-              });
-            } /*else {
+          geocoder.geocode(
+            { address: this.data_aux[i].address },
+            (res, status) => {
+              if (status == 'OK') {
+                map.setCenter(res[0].geometry.location);
+                new google.maps.Marker({
+                  map: map,
+                  position: res[0].geometry.location,
+                  icon,
+                });
+              } /*else {
               let mensajeError = "";
               if (status === "ZERO_RESULTS") {
                 mensajeError = "No hubo resultados para la dirección ingresada.";
@@ -655,44 +679,41 @@ export default {
               }
               alert(mensajeError);
             }*/
-          });
+            }
+          );
         }
-
       });
-
     },
 
     localizar(a, b) {
-      let direccion = a + ", " + b;
+      let direccion = a + ', ' + b;
 
       GoogleMapsLoader.load(google => {
-        let map = new google.maps.Map(document.getElementById("myMap"), {
-          zoom: 14
+        let map = new google.maps.Map(document.getElementById('myMap'), {
+          zoom: 14,
         });
 
         let geocoder = new google.maps.Geocoder();
 
         geocoder.geocode({ address: direccion }, (res, status) => {
-          if (status == "OK") {
-
+          if (status == 'OK') {
             map.setCenter(res[0].geometry.location);
             new google.maps.Marker({
               map: map,
-              position: res[0].geometry.location
+              position: res[0].geometry.location,
             });
-
           } else {
-            let mensajeError = "";
-            if (status === "ZERO_RESULTS") {
-              mensajeError = "No hubo resultados para la dirección ingresada.";
+            let mensajeError = '';
+            if (status === 'ZERO_RESULTS') {
+              mensajeError = 'No hubo resultados para la dirección ingresada.';
             } else if (
-              status === "OVER_QUERY_LIMIT" ||
-              status === "REQUEST_DENIED" ||
-              status === "UNKNOWN_ERROR"
+              status === 'OVER_QUERY_LIMIT' ||
+              status === 'REQUEST_DENIED' ||
+              status === 'UNKNOWN_ERROR'
             ) {
-              mensajeError = "Error general del mapa.";
-            } else if (status === "INVALID_REQUEST") {
-              mensajeError = "Error de la web. Contacte con Name Agency.";
+              mensajeError = 'Error general del mapa.';
+            } else if (status === 'INVALID_REQUEST') {
+              mensajeError = 'Error de la web. Contacte con Name Agency.';
             }
             alert(mensajeError);
           }
@@ -708,7 +729,7 @@ export default {
 
     filterArray(array, text) {
       let aux_array = [];
-      let regex = new RegExp(`${text}.*`, "i");
+      let regex = new RegExp(`${text}.*`, 'i');
 
       for (let i in array) {
         let temp = false;
@@ -732,28 +753,29 @@ export default {
 
     }*/
 
-    filterStatus(status){
+    filterStatus(status) {
       let temp = [];
-      if(status!='ALL'){
-        temp.push(this.data.find(x => {
-          return x.status == status
-        }));
-      }else{
-        for (let i in this.data){
-          temp.push(this.data[i])
-        }        
+      if (status != 'ALL') {
+        temp.push(
+          this.data.find(x => {
+            return x.status == status;
+          })
+        );
+      } else {
+        for (let i in this.data) {
+          temp.push(this.data[i]);
+        }
       }
       this.data_aux = temp;
       this.initializeGoogleMaps();
-    }
+    },
   },
 
   components: {
-    GoogleMap
+    GoogleMap,
   },
 
   mounted: function() {
-
     this.data_aux = this.data;
 
     this.focusAddress();
@@ -765,7 +787,7 @@ export default {
     //this.showStatus(this.showState)
   },
 
-  watch: {}
+  watch: {},
 };
 </script>
 
@@ -842,17 +864,22 @@ export default {
   align-items: center;
 }
 
-#datefilter{
+#datefilter {
   width: 30%;
   margin-left: 8%;
 }
 
-.datefilterinput{
+.datefilterinput {
   width: 11em;
 }
 
-#textfilter{
+#textfilter {
   width: 20%;
+}
+
+.is-scrollable {
+  overflow-y: scroll;
+  height: 15em;
 }
 </style>
 
