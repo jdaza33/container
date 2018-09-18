@@ -10,6 +10,32 @@
       </div>
 
       <div class="navbar-menu">
+          <div class="navbar-start"></div>
+          <div class="navbar-start"></div>
+
+          <div class="navbar-start">
+            <nav class="breadcrumb is-centered navbar-item" aria-label="breadcrumbs">
+              <ul>
+                  <li>
+                    <a>
+                      <span class="icon is-small">
+                        <i class="fas fa-home" aria-hidden="true"></i>
+                      </span>
+                      <span>Home</span>
+                    </a>
+                  </li>
+                  <li class="is-active">
+                    <a href="#" aria-current="page">
+                      <span class="icon is-small">
+                        <i :class="`fas fa-${breadcrumb_icon}`" aria-hidden="true"></i>
+                      </span>
+                      <span>{{breadcrumb}}</span>
+                    </a>
+                  </li>
+              </ul>
+            </nav>
+          </div>
+          
           <div class="navbar-end">
 
               <!--Photo user -->
@@ -18,7 +44,6 @@
                   <img src="img/chico.svg" class="is-rounded">
                 </figure>
               </div>
-              
               
 
               <b-dropdown  position="is-bottom-left">
@@ -34,7 +59,7 @@
                   <hr class="dropdown-divider">
 
                   <b-dropdown-item has-link v-for="(item, index) in items" :key="index">
-                      <a @click="go(item.url)">
+                      <a @click="go(item.url, item.fullname, item.icon)">
                           <b-icon :icon="item.icon" pack="fas"></b-icon>
                           {{item.title}}
                       </a>
@@ -146,6 +171,7 @@ export default {
           role: true,
           type: 'ALL',
           url: 'user',
+          fullname: 'Gestión de Usuarios'
         },
         {
           title: 'Pedidos',
@@ -153,10 +179,15 @@ export default {
           role: true,
           type: 'ALL',
           url: 'order',
+          fullname: 'Gestión de Pedidos'
         },
       ],
       right: null,
       menus: [{ title: 'Cerrar Sesión' }],
+
+      breadcrumb: '',
+      breadcrumb_icon: ''
+
     };
   },
   methods: {
@@ -164,8 +195,10 @@ export default {
       this.go('login');
     },
 
-    go(route) {
+    go(route, fullname, icon) {
       this.$router.push({ name: route });
+      this.breadcrumb = fullname;
+      this.breadcrumb_icon = icon;
     },
 
     //Metodo para abrir el menu en vista movil
@@ -242,11 +275,11 @@ export default {
   z-index: 1;
 }
 
-.container{
-    width: 100vw;
-    
-    max-width: 100vw;
-    padding: 0px 10px 0px 10px;
+.container {
+  width: 100vw;
+
+  max-width: 100vw;
+  padding: 0px 10px 0px 10px;
 }
 
 /*@media screen and (min-width: 1280px){

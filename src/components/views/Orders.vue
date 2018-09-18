@@ -164,7 +164,8 @@
                                       size="is-small"
                                       rounded
                                       class="datefilterinput"
-                                      v-model="date_filter_one">
+                                      v-model="date_filter_one"
+                                      :max-date="max_date">
                                   </b-datepicker>
                                 </b-field>
                                 <b-field>
@@ -175,7 +176,8 @@
                                       size="is-small"
                                       rounded
                                       class="datefilterinput"
-                                      v-model="date_filter_two">
+                                      v-model="date_filter_two"
+                                      :max-date="max_date">
                                   </b-datepicker>
                                 </b-field>
                                 <b-field>
@@ -479,6 +481,8 @@ export default {
     GoogleMapsLoader.LIBRARIES = ['geometry', 'places'];
     GoogleMapsLoader.LANGUAGE = 'es';
 
+    const today = new Date();
+
     return {
       //Datos Estados
       status: [
@@ -526,10 +530,7 @@ export default {
         },
       ],
 
-      address_temp: '',
-      location_temp: 'Cordoba',
-      showState: 'ALL',
-
+      //Datos de la tabla
       data: [
         {
           nro: 15015,
@@ -589,14 +590,7 @@ export default {
         },
       ],
 
-      data_aux: [],
-
-      datacont: [{ name: 'as' }],
-
-      search: '',
-      date_filter_one: '',
-      date_filter_two: '',
-
+      //Propiedades de la tabla
       isEmpty: false,
       isBordered: false,
       isStriped: true,
@@ -616,6 +610,22 @@ export default {
 
       checkedRows: [],
       isCheck: false,
+
+      //Datos auxiliares
+      address_temp: '',
+      location_temp: 'Cordoba',
+      showState: 'ALL',
+
+      data_aux: [],
+
+      datacont: [{ name: 'as' }],
+
+      search: '',
+      date_filter_one: '',
+      date_filter_two: '',
+
+      max_date: new Date(today.getFullYear(), today.getMonth(), today.getDate())
+
     };
   },
 
@@ -817,10 +827,6 @@ export default {
 
 .card-content {
   padding: 0.8rem;
-}
-
-.breadcrumb {
-  margin: 0px;
 }
 
 .field:not(:last-child) {

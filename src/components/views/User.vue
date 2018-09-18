@@ -1,14 +1,14 @@
 <template>
     <section class="container">
 
-        <nav class="breadcrumb is-centered" aria-label="breadcrumbs">
+        <!--<nav class="breadcrumb is-centered" aria-label="breadcrumbs">
             <ul>
                 <li><a href="#">Panel</a></li>
                 <li class="is-active"><a href="#" aria-current="page">Gestión de Usuarios</a></li>
             </ul>
-        </nav>
+        </nav>-->
 
-        <b-tabs type="is-boxed" position="is-centered">
+        <b-tabs type="is-boxed" position="is-centered" class="tab">
             
             <b-tab-item label="Visualizar" icon="eye" icon-pack="fas">
                 <b-table
@@ -382,5 +382,8 @@ export default {
     margin-bottom: 0.5rem;
 }
 
+.tab{
+    margin: 0px 90px 0px 90px;
+}
 </style>
 
