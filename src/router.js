@@ -17,6 +17,7 @@ export default new Router({
     {
       path: '/panel',
       name: 'panel',
+      redirect: '/panel/user',
       component: Panel,
       children: [
         {
@@ -38,6 +39,11 @@ export default new Router({
           }
         }
       ]
+    },
+    {
+      path: '*',
+      name: '404',
+      redirect: '/',
     }
   ]
 })

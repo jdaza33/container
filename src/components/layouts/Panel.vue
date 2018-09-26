@@ -86,7 +86,7 @@
       <b-modal :active.sync="isComponentModalUserActive" has-modal-card :width="960">
           <modal-user-data :userData="userData" :userInfoData="userInfoData"></modal-user-data>
       </b-modal>
-
+  
       <router-view></router-view>
 
     </div>

@@ -535,7 +535,7 @@ export default {
         {
           nro: 15015,
           status: 'P',
-          address: 'La Rioja Argentina',
+          address: 'La Rioja 854 Córdoba Argentina',
           contact: 'Luis Antonio 451254521',
           date: '06/09/2018',
           permission: 125456,
@@ -543,7 +543,7 @@ export default {
         {
           nro: 15016,
           status: 'AE',
-          address: 'Villa Maria Argentina',
+          address: 'Santa Rosa 1120 Córdoba Argentina',
           contact: 'Sra Monica 434343',
           date: '07/09/2018',
           permission: 125456,
@@ -551,7 +551,7 @@ export default {
         {
           nro: 15017,
           status: 'E',
-          address: 'Rio Cuarto Argentina',
+          address: 'Rio Negro 500 Córdoba Argentina',
           contact: 'Ramon Hernandez 123456789',
           date: '10/09/2018',
           permission: 125456,
@@ -559,7 +559,7 @@ export default {
         {
           nro: 15018,
           status: 'PR',
-          address: 'San Luis Argentina',
+          address: 'San Luis 300 Córdoba Argentina',
           contact: 'Marcos Perez Jimenez 1203210',
           date: '08/09/2018',
           permission: 125456,
@@ -567,7 +567,7 @@ export default {
         {
           nro: 15019,
           status: 'AR',
-          address: 'Mendoza Argentina',
+          address: 'Mendoza 645 Córdoba Argentina',
           contact: 'Simon Bolivar 4564111',
           date: '08/09/2018',
           permission: 125456,
@@ -575,7 +575,7 @@ export default {
         {
           nro: 15020,
           status: 'V',
-          address: 'San Juan Argentina',
+          address: 'Bv San Juan 890 Córdoba Argentina',
           contact: 'Jose Daza 2418784111',
           date: '11/09/2018',
           permission: 125456,
@@ -583,7 +583,7 @@ export default {
         {
           nro: 15021,
           status: 'RU',
-          address: 'Santa Fe Argentina',
+          address: 'Santa Fé 843 Córdoba Argentina',
           contact: 'Leonardo Dicaprio 2418784111',
           date: '01/09/2018',
           permission: 125456,
@@ -652,7 +652,7 @@ export default {
       GoogleMapsLoader.load(google => {
         let point = { lat: -31.416666, lng: -64.183333 };
         let map = new google.maps.Map(document.getElementById('myMap'), {
-          zoom: 6,
+          zoom: 13,
           center: point,
         });
 
