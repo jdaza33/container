@@ -326,7 +326,7 @@
 
                             <b-table-column field="date" label="" width="1" centered sortable>
                                 <div class="field">
-                                    <b-checkbox @change.native="check(props.row)"  v-model="props.row.check">
+                                    <b-checkbox @change.native="check(props.row)"  v-model="props.row.check" size="is-small">
                                     </b-checkbox>
                                 </div>
                             </b-table-column>
@@ -461,7 +461,6 @@
 </template>
 
 <script>
-import GoogleMap from '@/components/views/GoogleMap';
 //import { EventBus } from "@/vueBus.js";
 import GoogleMapsLoader from 'google-maps';
 
@@ -779,10 +778,6 @@ export default {
       this.data_aux = temp;
       this.initializeGoogleMaps();
     },
-  },
-
-  components: {
-    GoogleMap,
   },
 
   mounted: function() {

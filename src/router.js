@@ -4,6 +4,7 @@ import Login from './components/layouts/Login.vue'
 import Panel from './components/layouts/Panel.vue'
 import User from './components/views/User.vue'
 import Order from './components/views/Orders.vue'
+import Daily from './components/views/Daily.vue' 
 
 Vue.use(Router)
 
@@ -33,6 +34,15 @@ export default new Router({
           path: 'order',
           name: 'order',
           component: Order,
+          meta: {
+            requiredRol: true,
+            requiredAuth: true
+          }
+        },
+        {
+          path: 'daily',
+          name: 'daily',
+          component: Daily,
           meta: {
             requiredRol: true,
             requiredAuth: true

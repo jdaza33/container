@@ -181,6 +181,14 @@ export default {
           url: 'order',
           fullname: 'Gestión de Pedidos'
         },
+        {
+          title: 'Diario',
+          icon: 'clipboard-list',
+          role: true,
+          type: 'ALL',
+          url: 'daily',
+          fullname: 'Gestión Diaria'
+        },
       ],
       right: null,
       menus: [{ title: 'Cerrar Sesión' }],
