@@ -149,22 +149,21 @@
 
         <div class="column is-12">
 
-          <div class="is-line">
+          <b-field grouped>
 
-            <b-select placeholder="Chofer" rounded icon="user-tie" icon-pack="fas">
+            <b-select placeholder="Chofer" rounded icon="user-tie" icon-pack="fas" size="is-small">
                 <option value="cc">Cheo De La Cruz</option>
                 <option value="ab">Antonio Banderas</option>
             </b-select>
 
-            <b-select placeholder="Camión" rounded icon="bus" icon-pack="fas">
+            <b-select placeholder="Camión" rounded icon="bus" icon-pack="fas" size="is-small">
                 <option value="1">Numero 1</option>
                 <option value="2">Numero 2</option>
             </b-select>
 
-          </div>
+          </b-field>
 
           
-
           <b-table
           :data="data"
           :bordered="isBordered"
@@ -252,6 +251,11 @@
               </section>
           </template>
           </b-table>
+
+          <div class="has-text-right">
+            <a class="button is-vcentered is-primary is-outlined is-rounded">Guardar</a>
+          </div>
+
         </div>
          
       </div>
@@ -264,6 +268,16 @@
 
 import GoogleMapsLoader from 'google-maps';
 
+/*
+Pendiente P (#0095FF) --> https://image.ibb.co/goBifU/mapas_y_banderas_6.png
+A Enviar AE (#00FF4D) --> https://image.ibb.co/k9p8Ep/mapas_y_banderas_5.png
+Entregado E (#2DAD54) --> https://image.ibb.co/m2uKLU/mapas_y_banderas_4.png
+Posible Retirar PR (#F7FF00) --> https://image.ibb.co/kAMG0U/mapas_y_banderas_3.png
+A Retirar AR (#FFCC00) --> https://image.ibb.co/dLUfS9/mapas_y_banderas_2.png
+Vencido V (#FF0000) --> https://image.ibb.co/n1vWZp/mapas_y_banderas_1.png
+Retirar Urgente RU (#FF00F7) --> https://image.ibb.co/ip8779/mapas_y_banderas.png
+*/
+
 export default {
   
   data(){
@@ -274,6 +288,52 @@ export default {
     //const today = new Date();
 
     return{
+      //Datos Estados
+      status: [
+        {
+          name: 'Pendiente',
+          abv: 'P',
+          icon: 'https://image.ibb.co/goBifU/mapas_y_banderas_6.png',
+          color: '#0095FF',
+        },
+        {
+          name: 'A Enviar',
+          abv: 'AE',
+          icon: 'https://image.ibb.co/k9p8Ep/mapas_y_banderas_5.png',
+          color: '#00FF4D',
+        },
+        {
+          name: 'Entregado',
+          abv: 'E',
+          icon: 'https://image.ibb.co/m2uKLU/mapas_y_banderas_4.png',
+          color: '#2DAD54',
+        },
+        {
+          name: 'Posible Retirar',
+          abv: 'PR',
+          icon: 'https://image.ibb.co/kAMG0U/mapas_y_banderas_3.png',
+          color: '#F7FF00',
+        },
+        {
+          name: 'A Retirar',
+          abv: 'AR',
+          icon: 'https://image.ibb.co/dLUfS9/mapas_y_banderas_2.png',
+          color: '#FFCC00',
+        },
+        {
+          name: 'Vencido',
+          abv: 'V',
+          icon: 'https://image.ibb.co/n1vWZp/mapas_y_banderas_1.png',
+          color: '#FF0000',
+        },
+        {
+          name: 'Retirar Urgente',
+          abv: 'RU',
+          icon: 'https://image.ibb.co/ip8779/mapas_y_banderas.png',
+          color: '#FF00F7',
+        },
+      ],
+
       //Propiedades de la tabla
       isEmpty: false,
       isBordered: false,
@@ -484,11 +544,12 @@ export default {
 .is-scrollable {
   overflow-y: scroll;
   height: 22em;
+  margin-bottom: 1em;
 }
 
 .is-scrollable-two {
   overflow-y: scroll;
-  height: 11em;
+  height: 12em;
 }
 
 .min-text{
@@ -497,6 +558,19 @@ export default {
 
 .is-line{
   display: inline;
+}
+
+#myMapTwo {
+  height: 195px;
+  width: 100%;
+}
+
+.map {
+  margin-top: -25px;
+}
+
+.card-content {
+  padding: 0.8rem;
 }
 </style>
 
