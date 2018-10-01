@@ -177,6 +177,7 @@
                                       rounded
                                       class="datefilterinput"
                                       v-model="date_filter_two"
+                                      :min-date="date_filter_one"
                                       :max-date="max_date">
                                   </b-datepicker>
                                 </b-field>
@@ -629,6 +630,12 @@ export default {
   },
 
   methods: {
+
+    updateVue(){
+      this.date_filter_two = '';
+      this.$forceUpdate();
+    },
+
     check(data) {
       if (this.checkedRows.length > 0) {
         if (this.checkedRows[0].username == data.username) {
