@@ -9,7 +9,7 @@
           <div class="card">
             <div class="card-content">
 
-            <p class="title is-6 has-text-centered">Entregas</p>
+            <p class="title is-6 has-text-centered">A Entregar</p>
 
             <b-table
             :data="data_one"
@@ -74,7 +74,7 @@
           <div class="card">
             <div class="card-content">
 
-              <p class="title is-6 has-text-centered">Retiros</p>
+              <p class="title is-6 has-text-centered">A Retirar</p>
 
               <b-table
               :data="data_two"

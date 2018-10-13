@@ -69,33 +69,77 @@
                             </p>
 
                             <b-table
-                            :data="datacont"
+                            :data="dataTableOrders"
                             :bordered="false"
                             :striped="false"
                             :narrowed="true"
                             :hoverable="false"
                             :loading="false"
                             :focusable="false"
-                            :mobile-cards="hasMobileCards">
+                            :mobile-cards="hasMobileCards"
+                            class="is-scrollable-two min-text">
 
                             <template slot-scope="props">
 
-                                <b-table-column field="date" label="Cant." centered sortable>
-                                    2
+                                <b-table-column field="date" label="" width="1" centered sortable>
+                                    <div class="field">
+                                        <b-checkbox @change.native="checkTableOrders(props.row)"  v-model="props.row.check" size="is-small">
+                                        </b-checkbox>
+                                    </div>
+                                </b-table-column>
+
+                                <b-table-column field="date" label="Cant." width="80" centered sortable>
+                                    <div v-if="checkedRowsTableOrders.length > 0">
+                                        <div v-if="checkedRowsTableOrders[0].nro == props.row.nro">
+                                            <b-field>
+                                                <b-input 
+                                                v-model="props.row.cant"
+                                                type="number"
+                                                rounded
+                                                maxlength="3"
+                                                size="is-small">
+                                                </b-input>
+                                            </b-field>
+                                        </div>
+                                        <div v-else>
+                                            {{props.row.cant}}
+                                        </div>
+                                    </div>
+                                    <div v-else>
+                                        {{props.row.cant}}
+                                    </div>
                                 </b-table-column>
                                 
 
-                                <b-table-column field="nro" label="Importe" centered sortable>
-                                    1500.00
+                                <b-table-column field="nro" label="Importe" width="100" centered sortable>
+                                    {{1000 * props.row.cant}}
                                 </b-table-column>
 
                                 <b-table-column field="status" label="Fecha de Entrega" centered sortable>
-                                    03-02-2015
+                                    <div v-if="checkedRowsTableOrders.length > 0">
+                                        <div v-if="checkedRowsTableOrders[0].nro == props.row.nro">
+                                            <b-field>
+                                                <b-input 
+                                                v-model="props.row.date_ent"
+                                                type="text"
+                                                rounded
+                                                maxlength="10"
+                                                size="is-small">
+                                                </b-input>
+                                            </b-field>
+                                        </div>
+                                        <div v-else>
+                                            {{props.row.date_ent}}
+                                        </div>
+                                    </div>
+                                    <div v-else>
+                                        {{props.row.date_ent}}
+                                    </div>
                                 </b-table-column>
 
                                 <b-table-column field="event" label="Accion" width="120" centered sortable>
                                     <p class="buttons is-centered">
-                                        <a class="button is-small is-success is-outlined">
+                                        <a class="button is-small is-success is-outlined" @click="generateRowTableOrders()">
                                             <span class="icon is-small">
                                             <i class="fas fa-plus-circle"></i>
                                             </span>
@@ -109,7 +153,7 @@
 
                             <div class="columns">
                                 <div class="column is-6">
-                                    <p class="title is-6">Contenedores Disponibles: 32 </p>
+                                    <p>{{`Contenedores Disponibles: ${contAvailableContainer()}`}} </p>
                                 </div>
                                 <div class="column is-6 end">
                                     <p class="buttons is-centered">
@@ -165,7 +209,7 @@
                                       rounded
                                       class="datefilterinput"
                                       v-model="date_filter_one"
-                                      :max-date="max_date">
+                                      :min-date="changeDateOne()">
                                   </b-datepicker>
                                 </b-field>
                                 <b-field>
@@ -178,7 +222,7 @@
                                       class="datefilterinput"
                                       v-model="date_filter_two"
                                       :min-date="date_filter_one"
-                                      :max-date="max_date">
+                                      :disabled="isDateTwoDisabled">
                                   </b-datepicker>
                                 </b-field>
                                 <b-field>
@@ -481,7 +525,7 @@ export default {
     GoogleMapsLoader.LIBRARIES = ['geometry', 'places'];
     GoogleMapsLoader.LANGUAGE = 'es';
 
-    const today = new Date();
+    //const today = new Date();
 
     return {
       //Datos Estados
@@ -609,6 +653,7 @@ export default {
       perPage: 4,
 
       checkedRows: [],
+      checkedRowsTableOrders: [],
       isCheck: false,
 
       //Datos auxiliares
@@ -617,14 +662,25 @@ export default {
       showState: 'ALL',
 
       data_aux: [],
+      availableContainer: 30,
 
-      datacont: [{ name: 'as' }],
+      isDateTwoDisabled: true,
+
+      dataTableOrders: [
+        {
+          nro: 1,
+          cant: 2,
+          import: 2000,
+          date_ent: '03-02-2018'
+        }
+      ],
 
       search: '',
       date_filter_one: '',
       date_filter_two: '',
 
-      max_date: new Date(today.getFullYear(), today.getMonth(), today.getDate())
+      max_date_one: '',
+      max_date_two: ''
 
     };
   },
@@ -651,6 +707,24 @@ export default {
         }
       } else {
         this.checkedRows.push(data);
+      }
+    },
+
+    checkTableOrders(data) {
+      if (this.checkedRowsTableOrders.length > 0) {
+        if (this.checkedRowsTableOrders[0].username == data.username) {
+          this.checkedRowsTableOrders.shift();
+        } else {
+          for (let i in this.data) {
+            if (this.data[i].username == this.checkedRowsTableOrders[0].username) {
+              this.data[i].check = false;
+            }
+          }
+          this.checkedRowsTableOrders.shift();
+          this.checkedRowsTableOrders.push(data);
+        }
+      } else {
+        this.checkedRowsTableOrders.push(data);
       }
     },
 
@@ -785,6 +859,32 @@ export default {
       this.data_aux = temp;
       this.initializeGoogleMaps();
     },
+
+    generateRowTableOrders(){
+      this.dataTableOrders.push(
+        {
+          nro: this.dataTableOrders[this.dataTableOrders.length-1].nro + 1,
+          cant: 1,
+          import: 1000,
+          date_ent: '01/10/2018'
+        }
+      )
+    },
+
+    contAvailableContainer(){
+      let sum = this.availableContainer
+      for (let i in this.dataTableOrders){
+        sum -= this.dataTableOrders[i].cant
+      }
+      return sum
+    },
+
+    changeDateOne(){
+      this.date_filter_two = this.date_filter_one
+      if(this.date_filter_one != '') this.isDateTwoDisabled = false
+      return new Date(1900,1,1)
+    }
+
   },
 
   mounted: function() {
@@ -862,7 +962,7 @@ export default {
 }
 
 #myMap {
-  height: 300px;
+  height: 230px;
   width: 100%;
 }
 
@@ -888,6 +988,15 @@ export default {
 .is-scrollable {
   overflow-y: scroll;
   height: 15em;
+}
+
+.is-scrollable-two {
+  overflow-y: scroll;
+  height: 5.4em;
+}
+
+.min-text{
+  font-size: 0.8em;
 }
 </style>
 
