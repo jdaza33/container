@@ -27,7 +27,7 @@
 
               <b-table-column field="date" label="" width="1" centered sortable>
                 <div class="field">
-                    <b-checkbox @change.native="check(props.row)"  v-model="props.row.check" size="is-small">
+                    <b-checkbox @change.native="addCheck(props.row)" size="is-small">
                     </b-checkbox>
                 </div>
               </b-table-column>
@@ -41,7 +41,7 @@
               </b-table-column>
 
               <b-table-column field="obs" label="Observación" centered sortable width="50">
-                <small>{{props.row.observation}}</small>
+                <small>{{props.row.address.substring(0,10)}}</small>
               </b-table-column>
 
               <b-table-column field="obs" label="Fecha Entr.Comp" centered sortable width="50">
@@ -92,7 +92,7 @@
 
                 <b-table-column field="date" label="" width="1" centered sortable>
                   <div class="field">
-                      <b-checkbox @change.native="check(props.row)"  v-model="props.row.check" size="is-small">
+                      <b-checkbox @change.native="addCheck(props.row)"  size="is-small">
                       </b-checkbox>
                   </div>
                 </b-table-column>
@@ -106,11 +106,11 @@
                 </b-table-column>
 
                 <b-table-column field="obs" label="Observación" centered sortable width="50">
-                  <small>{{props.row.observation}}</small>
+                  <small>{{props.row.address.substring(0,10)}}</small>
                 </b-table-column>
 
                 <b-table-column field="obs" label="Fecha Entr.Comp" centered sortable width="50">
-                  <small>{{props.row.date_ret}}</small>
+                  <small>{{props.row.date_env}}</small>
                 </b-table-column>
 
               </template>
@@ -176,6 +176,8 @@
           :loading="isLoading"
           :focusable="isFocusable"
           :mobile-cards="hasMobileCards"
+          :default-sort-direction="defaultSortDirection"
+          default-sort="hour"
           class="is-scrollable"
           >
 
@@ -183,7 +185,7 @@
 
             <b-table-column field="date" label="" width="1" centered sortable>
               <div class="field">
-                  <b-checkbox @change.native="check(props.row)"  v-model="props.row.check" size="is-small">
+                  <b-checkbox @change.native="(props.row.ischeck = !props.row.ischeck)" v-model="props.row.ischeck" size="is-small">
                   </b-checkbox>
               </div>
             </b-table-column>
@@ -197,23 +199,34 @@
             </b-table-column>
 
             <b-table-column field="hour" label="Hora" centered sortable width="50">
-              {{props.row.hour}}
+              <div v-if="props.row.ischeck">
+                <b-input 
+                  v-model="props.row.hour"
+                  type="text"
+                  rounded
+                  maxlength="5"
+                  size="is-small">
+                </b-input>
+              </div>
+              <div v-else>
+                {{props.row.hour}}
+              </div>
             </b-table-column>
 
             <b-table-column field="nro" label="Nro." centered sortable width="50">
-              {{props.row.nro}}
+              {{props.row.order}}
             </b-table-column>
 
             <b-table-column field="obs" label="Observación" centered sortable width="100">
-              {{props.row.observation}}
+              {{`${props.row.address.substring(0,10)} / ${props.row.contact.substring(0,10)}`}}
             </b-table-column>
 
             <b-table-column field="obs" label="Fecha Env.Prog" centered sortable width="50">
-              {{props.row.date_env}}
+              {{props.row.date}}
             </b-table-column>
 
             <b-table-column field="obs" label="Fecha Ret.Prog" centered sortable width="50">
-              {{props.row.date_ret}}
+              {{props.row.date_env}}
             </b-table-column>
 
             <b-table-column field="actions" label="Acciones" width="120" centered sortable>
@@ -347,72 +360,81 @@ export default {
       isFocusable: false,
       isLoading: false,
       hasMobileCards: true,
+      defaultSortDirection: 'asc',
 
       selected: '',
 
-      data: [
-        {
-          status: 'n/a',
-          order: 'A',
-          hour: '8:00',
-          nro: '23',
-          observation: 'Dirección / Contacto',
-          date_env: 'dd-mm',
-          date_ret: 'dd-mm'
-        }
-      ],
+      data: [],
 
       data_one: [
         {
-          order: '234',
-          status: 'P',
-          observation: 'Colon 350',
-          date_env: '14-05-2018'
+          order: 15016,
+          status: 'AE',
+          address: 'Santa Rosa 1120 Córdoba Argentina',
+          contact: 'Sra Monica 434343',
+          date: '07/09/2018',
+          date_env: '14-10-2018',
+          permission: 125456,
+          hour: null,
+          ischeck: false
         },
         {
-          order: '234',
-          status: 'P',
-          observation: 'Colon 350',
-          date_env: '14-05-2018'
+          order: 15017,
+          status: 'AE',
+          address: 'La Rioja 854 Córdoba Argentina',
+          contact: 'Luis Antonio 451254521',
+          date: '06/09/2018',
+          date_env: '19-10-2018',
+          permission: 125456,
+          hour: null,
+          ischeck: false
         },
         {
-          order: '234',
-          status: 'P',
-          observation: 'Colon 350',
-          date_env: '14-05-2018'
-        },
-        {
-          order: '234',
-          status: 'P',
-          observation: 'Colon 350',
-          date_env: '14-05-2018'
+          order: 15018,
+          status: 'AE',
+          address: 'Rio Negro 500 Córdoba Argentina',
+          contact: 'Ramon Hernandez 123456789',
+          date: '10/09/2018',
+          date_env: '21-10-2018',
+          permission: 125456,
+          hour: null,
+          ischeck: false
         }
       ],
 
       data_two: [
         {
-          order: '234',
-          status: 'P',
-          observation: 'Colon 350',
-          date_ret: '14-05-2018'
+          order: 25016,
+          status: 'AR',
+          address: 'Santa Rosa 1120 Córdoba Argentina',
+          contact: 'Sra Monica 434343',
+          date: '07/09/2018',
+          date_env: '14-10-2018',
+          permission: 125456,
+          hour: null,
+          ischeck: false
         },
         {
-          order: '234',
-          status: 'P',
-          observation: 'Colon 350',
-          date_ret: '14-05-2018'
+          order: 25017,
+          status: 'AR',
+          address: 'Mendoza 645 Córdoba Argentina',
+          contact: 'Simon Bolivar 4564111',
+          date: '06/09/2018',
+          date_env: '19-10-2018',
+          permission: 125456,
+          hour: null,
+          ischeck: false
         },
         {
-          order: '234',
-          status: 'P',
-          observation: 'Colon 350',
-          date_ret: '14-05-2018'
-        },
-        {
-          order: '234',
-          status: 'P',
-          observation: 'Colon 350',
-          date_ret: '14-05-2018'
+          order: 25018,
+          status: 'AR',
+          address: 'Bv San Juan 890 Córdoba Argentina',
+          contact: 'Jose Daza 2418784111',
+          date: '10/09/2018',
+          date_env: '21-10-2018',
+          permission: 125456,
+          hour: null,
+          ischeck: false
         }
       ],
 
@@ -430,7 +452,24 @@ export default {
           })
           new google.maps.Marker({position: point, map: map, icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'});
       })
+    },
+
+    addCheck(data){
+      let op = false
+      let index = null
+
+      for (let i in this.data){
+        if(this.data[i].order == data.order){
+          op = true
+          index = i
+        }
+      }
+
+      op ? this.data.splice(index, 1) : this.data.push(data)
+
     }
+
+    
   },
 
   mounted: function() {
@@ -505,6 +544,10 @@ export default {
 
 .centerwidth{
   margin-left: 25%;
+}
+
+.datefilterinput {
+  width: 100px;
 }
 </style>
 

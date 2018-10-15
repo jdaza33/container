@@ -696,11 +696,11 @@ export default {
 
     check(data) {
       if (this.checkedRows.length > 0) {
-        if (this.checkedRows[0].username == data.username) {
+        if (this.checkedRows[0].nro == data.nro) {
           this.checkedRows.shift();
         } else {
           for (let i in this.data) {
-            if (this.data[i].username == this.checkedRows[0].username) {
+            if (this.data[i].nro == this.checkedRows[0].nro) {
               this.data[i].check = false;
             }
           }
