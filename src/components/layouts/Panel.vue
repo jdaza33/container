@@ -10,8 +10,25 @@
       </div>
 
       <div class="navbar-menu">
-          <div class="navbar-start"></div>
-          <div class="navbar-start"></div>
+
+          <div class="navbar-start">
+            <nav class="breadcrumb is-centered navbar-item" aria-label="breadcrumbs">
+              <p>{{datenow.toLocaleDateString()}}</p>
+              <b-datepicker
+                  placeholder="Fecha de inicio"
+                  icon="calendar-alt"
+                  icon-pack="fas"
+                  size="is-small"
+                  rounded
+                  class="datefilterinput"
+                  v-model="datenow">
+              </b-datepicker>
+            </nav>
+          </div>
+
+
+          
+          
 
           <div class="navbar-start">
             <nav class="breadcrumb is-centered navbar-item" aria-label="breadcrumbs">
@@ -27,9 +44,9 @@
                   <li class="is-active">
                     <a href="#" aria-current="page">
                       <span class="icon is-small">
-                        <i :class="`fas fa-${breadcrumb_icon}`" aria-hidden="true"></i>
+                        <i :class="`fas fa-${breadcrumb != '' ? items.find(item => {return breadcrumb == item.url}).icon : 'date'}`" aria-hidden="true"></i>
                       </span>
-                      <span>{{breadcrumb}}</span>
+                      <span>{{breadcrumb != '' ? items.find(item => {return breadcrumb == item.url}).fullname : '...' }}</span>
                     </a>
                   </li>
               </ul>
@@ -59,7 +76,7 @@
                   <hr class="dropdown-divider">
 
                   <b-dropdown-item has-link v-for="(item, index) in items" :key="index">
-                      <a @click="go(item.url, item.fullname, item.icon)">
+                      <a @click="go(item.url)">
                           <b-icon :icon="item.icon" pack="fas"></b-icon>
                           {{item.title}}
                       </a>
@@ -147,6 +164,7 @@
 <script>
 //Components
 import ModalUserData from '../views/ModalUserData.vue';
+import EventBus from '@/vueBus.js';
 
 export default {
   data() {
@@ -194,7 +212,9 @@ export default {
       menus: [{ title: 'Cerrar Sesión' }],
 
       breadcrumb: '',
-      breadcrumb_icon: ''
+      breadcrumb_icon: '',
+
+      datenow: new Date()
 
     };
   },
@@ -203,10 +223,8 @@ export default {
       this.go('login');
     },
 
-    go(route, fullname, icon) {
+    go(route) {
       this.$router.push({ name: route });
-      this.breadcrumb = fullname;
-      this.breadcrumb_icon = icon;
     },
 
     //Metodo para abrir el menu en vista movil
@@ -228,12 +246,15 @@ export default {
 
   created() {
     //this.loadDataUser();
+    EventBus.$on('hijo:change', (name) => {
+      this.breadcrumb = name
+    })
   },
   watch: {
     //$route: "loadDataUser"
   },
   components: {
-    ModalUserData,
+    ModalUserData
   },
 };
 </script>
@@ -279,7 +300,7 @@ export default {
 }*/
 
 .is-main-content {
-  margin: 80px 10px 10px 10px;
+  margin: 80px 10px 10px 10px;  
   z-index: 1;
 }
 
@@ -346,6 +367,11 @@ hr {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.datefilterinput {
+  margin-left: 1em;
+  width: 1em;
 }
 </style>
 

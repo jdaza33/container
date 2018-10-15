@@ -240,7 +240,7 @@
 
 <script>
 
-
+import EventBus from '@/vueBus.js';
 
 //Components
 import ModalCreateNewUser from "@/components/views/ModalCreateNewUser.vue";
@@ -348,6 +348,10 @@ export default {
     }*/
 
     
+  },
+
+  mounted(){
+      EventBus.$emit('hijo:change', 'user')
   }
 
 };

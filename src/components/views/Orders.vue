@@ -153,7 +153,7 @@
 
                             <div class="columns">
                                 <div class="column is-6">
-                                    <p>{{`Contenedores Disponibles: ${contAvailableContainer()}`}} </p>
+                                    <p><small>{{`Contenedores Disponibles: ${contAvailableContainer()}`}}</small></p>
                                 </div>
                                 <div class="column is-6 end">
                                     <p class="buttons is-centered">
@@ -193,7 +193,7 @@
 
                     <div class="card-content">
 
-                        <p class="title is-6 has-text-centered">Pedidos Comprometidos para la fecha: dd-mm-aaaa</p>
+                        <p class="title is-6 has-text-centered">Pedidos Comprometidos para la fecha: {{today.toLocaleDateString()}}</p>
 
                         <section>
 
@@ -508,6 +508,7 @@
 <script>
 //import { EventBus } from "@/vueBus.js";
 import GoogleMapsLoader from 'google-maps';
+import EventBus from '@/vueBus.js';
 
 /*
 Pendiente P (#0095FF) --> https://image.ibb.co/goBifU/mapas_y_banderas_6.png
@@ -525,7 +526,7 @@ export default {
     GoogleMapsLoader.LIBRARIES = ['geometry', 'places'];
     GoogleMapsLoader.LANGUAGE = 'es';
 
-    //const today = new Date();
+    const today = new Date();
 
     return {
       //Datos Estados
@@ -678,6 +679,7 @@ export default {
       search: '',
       date_filter_one: '',
       date_filter_two: '',
+      today,
 
       max_date_one: '',
       max_date_two: ''
@@ -897,6 +899,8 @@ export default {
     this.initializeGoogleMaps();
 
     //this.showStatus(this.showState)
+
+    EventBus.$emit('hijo:change', 'order')
   },
 
   watch: {},

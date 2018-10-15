@@ -161,7 +161,10 @@
                 <option value="2">Numero 2</option>
             </b-select>
 
+            <p class="title is-5 center centerwidth">Hoja de Ruta</p>
+
           </b-field>
+          
 
           
           <b-table
@@ -267,6 +270,7 @@
 <script>
 
 import GoogleMapsLoader from 'google-maps';
+import EventBus from '@/vueBus.js';
 
 /*
 Pendiente P (#0095FF) --> https://image.ibb.co/goBifU/mapas_y_banderas_6.png
@@ -355,89 +359,7 @@ export default {
           observation: 'Dirección / Contacto',
           date_env: 'dd-mm',
           date_ret: 'dd-mm'
-        },
-        {
-          status: 'n/a',
-          order: 'A',
-          hour: '8:00',
-          nro: '23',
-          observation: 'Dirección / Contacto',
-          date_env: 'dd-mm',
-          date_ret: 'dd-mm'
-        },
-        {
-          status: 'n/a',
-          order: 'A',
-          hour: '8:00',
-          nro: '23',
-          observation: 'Dirección / Contacto',
-          date_env: 'dd-mm',
-          date_ret: 'dd-mm'
-        },
-        {
-          status: 'n/a',
-          order: 'A',
-          hour: '8:00',
-          nro: '23',
-          observation: 'Dirección / Contacto',
-          date_env: 'dd-mm',
-          date_ret: 'dd-mm'
-        },
-        {
-          status: 'n/a',
-          order: 'A',
-          hour: '8:00',
-          nro: '23',
-          observation: 'Dirección / Contacto',
-          date_env: 'dd-mm',
-          date_ret: 'dd-mm'
-        },
-        {
-          status: 'n/a',
-          order: 'A',
-          hour: '8:00',
-          nro: '23',
-          observation: 'Dirección / Contacto',
-          date_env: 'dd-mm',
-          date_ret: 'dd-mm'
-        },
-        {
-          status: 'n/a',
-          order: 'A',
-          hour: '8:00',
-          nro: '23',
-          observation: 'Dirección / Contacto',
-          date_env: 'dd-mm',
-          date_ret: 'dd-mm'
-        },
-        {
-          status: 'n/a',
-          order: 'A',
-          hour: '8:00',
-          nro: '23',
-          observation: 'Dirección / Contacto',
-          date_env: 'dd-mm',
-          date_ret: 'dd-mm'
-        },
-        {
-          status: 'n/a',
-          order: 'A',
-          hour: '8:00',
-          nro: '23',
-          observation: 'Dirección / Contacto',
-          date_env: 'dd-mm',
-          date_ret: 'dd-mm'
-        },
-        {
-          status: 'n/a',
-          order: 'A',
-          hour: '8:00',
-          nro: '23',
-          observation: 'Dirección / Contacto',
-          date_env: 'dd-mm',
-          date_ret: 'dd-mm'
         }
-        
       ],
 
       data_one: [
@@ -514,6 +436,7 @@ export default {
   mounted: function() {
     //this.data_aux = this.data;
     this.initializeGoogleMaps();
+    EventBus.$emit('hijo:change', 'daily')
   },
 
   watch:{}
@@ -530,7 +453,7 @@ export default {
 }
 
 .part-one {
-  height: 28vh;
+  height: 34vh;
   /*border: solid 1px black;*/
   margin: 0px 15px 0px 15px;
 }
@@ -543,7 +466,8 @@ export default {
 
 .is-scrollable {
   overflow-y: scroll;
-  height: 22em;
+  height: auto;
+  max-height: 13em;
   margin-bottom: 1em;
 }
 
@@ -571,6 +495,16 @@ export default {
 
 .card-content {
   padding: 0.8rem;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.centerwidth{
+  margin-left: 25%;
 }
 </style>
 
