@@ -1,13 +1,6 @@
 <template>
     <section class="container">
 
-        <!--<nav class="breadcrumb is-centered" aria-label="breadcrumbs">
-            <ul>
-                <li><a href="#">Panel</a></li>
-                <li class="is-active"><a href="#" aria-current="page">Gestión de Usuarios</a></li>
-            </ul>
-        </nav>-->
-
         <b-tabs type="is-boxed" position="is-centered" class="tab">
             
             <b-tab-item label="Visualizar" icon="eye" icon-pack="fas">
@@ -228,12 +221,6 @@
 
         </b-tabs>
 
-        <!--Modals-->
-        <b-modal :active.sync="isComponentModalCreateNewUserActive" has-modal-card :width="960">
-            <modal-create-new-user @hijo:change="listenSon"></modal-create-new-user>
-        </b-modal>
-        <!--End Modals-->
-
         
     </section>
 </template>
@@ -242,14 +229,10 @@
 
 import EventBus from '@/vueBus.js';
 
-//Components
-import ModalCreateNewUser from "@/components/views/ModalCreateNewUser.vue";
-
 export default {
   data() {
 
     return {
-      isComponentModalCreateNewUserActive: false,
 
       data: [
           {
@@ -292,9 +275,7 @@ export default {
     };
   },
 
-  components: {
-    ModalCreateNewUser
-  },
+  components: {},
 
   methods: {
     listenSon() {
@@ -303,10 +284,6 @@ export default {
 
     deselect(){
         this.selected = ''
-    },
-
-    loadCreateNewUser(){
-        this.isComponentModalCreateNewUserActive = true;
     },
 
     check(data){

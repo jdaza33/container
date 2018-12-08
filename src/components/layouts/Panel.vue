@@ -207,6 +207,14 @@ export default {
           url: 'daily',
           fullname: 'Gestión Diaria'
         },
+        {
+          title: 'Empresas',
+          icon: 'building',
+          role: true,
+          type: 'ALL',
+          url: 'company',
+          fullname: 'Gestión de Empresas'
+        }
       ],
       right: null,
       menus: [{ title: 'Cerrar Sesión' }],
